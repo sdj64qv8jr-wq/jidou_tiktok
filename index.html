@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0a0612">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MIRCO">
+<title>MIRCO STUDIO — for @mirco9015</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Shippori+Mincho+B1:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0612;--bg-elev:#110a1c;--surface:#1a1028;--surface-2:#221538;--line:#2d1b46;--line-soft:#1f1430;--text:#f0e6f5;--text-soft:#b8a8c8;--mute:#6b5980;--accent:#e91e63;--accent-2:#b06cf0;--accent-3:#4dd0ff;--accent-soft:#e91e6320;--accent-glow:#e91e6340;--gold:#ffd166;--danger:#c45a4a;--ok:#06d6a0;--radius:10px;--t:280ms cubic-bezier(.2,.8,.2,1);--safe-bottom:env(safe-area-inset-bottom,0);--safe-top:env(safe-area-inset-top,0)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:'Manrope','Noto Sans JP',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+body{min-height:100vh;background-image:radial-gradient(ellipse at 20% 0%,#e91e6320 0%,transparent 50%),radial-gradient(ellipse at 80% 100%,#b06cf022 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,#4dd0ff10 0%,transparent 70%);padding-bottom:calc(120px + var(--safe-bottom))}
+::selection{background:var(--accent);color:white}
+.serif{font-family:'Cormorant Garamond','Shippori Mincho B1',serif}
+.mincho{font-family:'Shippori Mincho B1',serif}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(10,6,18,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line-soft);padding:calc(14px + var(--safe-top)) 18px 14px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:22px;letter-spacing:-.01em;font-style:italic;background:linear-gradient(135deg,var(--accent),var(--accent-2),var(--accent-3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:8px}
+.brand .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);-webkit-text-fill-color:var(--accent);box-shadow:0 0 12px var(--accent-glow);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.85);opacity:.6}}
+.top-actions{display:flex;gap:6px}
+.top-btn{background:transparent;border:1px solid var(--line);color:var(--text-soft);padding:7px 11px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;font-weight:500}
+.top-btn:active{background:var(--surface)}
+.container{padding:18px}
+.status-strip{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:var(--radius);margin-bottom:14px;gap:14px}
+.status-strip-left{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.status-handle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--text);font-weight:500;letter-spacing:-.01em}
+.status-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-strip-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;min-width:80px}
+.status-num{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1;cursor:pointer;letter-spacing:-.02em}
+.status-line{width:100px;height:2px;background:var(--surface-2);border-radius:1px;overflow:hidden}
+.status-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:1px;box-shadow:0 0 8px var(--accent-glow);transition:width var(--t)}
+.alert-card{background:linear-gradient(135deg,rgba(255,209,102,.08),transparent);border:1px solid var(--gold);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+.alert-card .alert-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold);margin-bottom:6px;font-weight:600}
+.alert-card .alert-body{font-size:13px;color:var(--text-soft);line-height:1.7}
+.alert-card .alert-body strong{color:var(--gold);font-weight:600}
+.tabs{display:flex;gap:6px;background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:10px;padding:5px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:max-content;background:transparent;border:none;color:var(--text-soft);padding:10px 12px;border-radius:7px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;font-weight:500;white-space:nowrap;transition:all var(--t)}
+.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;box-shadow:0 2px 12px var(--accent-glow)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.section{background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--mute);text-transform:uppercase}
+.section-title .num{color:var(--accent);margin-right:6px}
+.help{background:linear-gradient(135deg,var(--accent-soft),transparent);border:1px solid var(--accent-glow);padding:13px 14px;border-radius:var(--radius);font-size:12px;margin-bottom:16px;line-height:1.6;color:var(--text-soft)}
+.help strong{color:var(--accent);font-weight:600}
+.input,.textarea,.select{width:100%;background:var(--surface);border:1px solid var(--line);color:var(--text);padding:14px;border-radius:var(--radius);font-family:inherit;font-size:15px;-webkit-appearance:none}
+.input:focus,.textarea:focus,.select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.textarea{resize:vertical;min-height:90px;font-family:'Shippori Mincho B1',serif;font-size:16px}
+.select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23e91e63' d='M0 0l5 6 5-6z'/></svg>");background-repeat:no-repeat;background-position:right 16px center;padding-right:38px}
+.field{margin-bottom:12px}
+.field-label{display:block;font-size:11px;color:var(--mute);margin-bottom:6px;letter-spacing:.05em}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--surface);border:1px solid var(--line);color:var(--text-soft);padding:9px 14px;border-radius:100px;font-size:13px;font-family:inherit;font-weight:500;min-height:36px}
+.chip.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border-color:transparent;font-weight:600;box-shadow:0 2px 8px var(--accent-glow)}
+.fab-cta{position:fixed;bottom:0;left:0;right:0;padding:12px 18px calc(12px + var(--safe-bottom));background:linear-gradient(to top,var(--bg) 0%,var(--bg) 60%,transparent 100%);z-index:40}
+.cta{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;padding:16px;border-radius:var(--radius);font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;cursor:pointer;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;box-shadow:0 -4px 24px -4px var(--accent-glow),0 0 0 1px var(--accent-glow)}
+.cta:disabled{opacity:.5}
+.statusbar{display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:var(--radius);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-soft);margin-bottom:14px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--mute);flex-shrink:0}
+.status-dot.working{background:var(--accent);animation:pulse 1.4s ease-in-out infinite}
+.status-dot.done{background:var(--ok)}
+.status-dot.error{background:var(--danger)}
+.result-card{background:var(--bg-elev);border:1px solid var(--line-soft);border-radius:var(--radius);padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.result-card.featured{border:1px solid var(--accent-glow);background:linear-gradient(135deg,var(--bg-elev) 0%,var(--surface) 100%)}
+.result-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3))}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.card-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mute);letter-spacing:.2em;text-transform:uppercase}
+.card-title .icon{color:var(--accent);margin-right:6px}
+.lyric-box{font-family:'Shippori Mincho B1',serif;font-size:16px;line-height:1.9;color:var(--text);white-space:pre-wrap;border-left:3px solid var(--accent);padding:8px 0 8px 14px;margin:8px 0}
+.concept-box{background:var(--surface);padding:14px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--accent-3);text-align:center;margin:8px 0;letter-spacing:.02em}
+.scene-list{display:flex;flex-direction:column;gap:10px;margin:10px 0}
+.scene-item{background:var(--surface);padding:12px 14px;border-radius:8px;border-left:3px solid var(--accent-2);font-size:14px;line-height:1.6}
+.scene-item .num{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);background:var(--bg);padding:3px 7px;border-radius:3px;margin-right:8px;font-weight:600}
+.prompt-box{background:var(--bg);border:1px solid var(--line);padding:12px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;color:var(--accent-3);margin:8px 0;word-break:break-word;max-height:180px;overflow-y:auto}
+.tags-box{font-size:13px;color:var(--accent);font-family:'Manrope',sans-serif;word-break:break-word;line-height:1.7}
+.icon-btn{background:transparent;border:1px solid var(--line);color:var(--text-soft);padding:6px 11px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;font-weight:500;cursor:pointer}
+.icon-btn:active{background:var(--surface);border-color:var(--accent);color:var(--accent)}
+.spin{width:14px;height:14px;border:1.5px solid #fff5;border-top-color:currentColor;border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.workflow-card{background:linear-gradient(135deg,var(--surface) 0%,var(--bg-elev) 100%);border:1px solid var(--accent);border-radius:14px;padding:18px;margin-bottom:18px;position:relative;overflow:hidden;box-shadow:0 8px 32px -12px var(--accent-glow)}
+.workflow-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3))}
+.workflow-head{margin-bottom:16px}
+.workflow-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.workflow-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mute);letter-spacing:.15em;text-transform:uppercase}
+.workflow-steps{display:flex;flex-direction:column;gap:8px}
+.wf-step{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;background:var(--bg);border:1px solid var(--line);border-radius:8px;transition:all var(--t)}
+.wf-step.done{border-color:var(--ok);background:linear-gradient(90deg,rgba(6,214,160,.05),var(--bg))}
+.wf-step.done .wf-step-num{background:var(--ok);color:var(--bg)}
+.wf-step-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--accent);color:white;padding:4px 8px;border-radius:4px;letter-spacing:.05em;flex-shrink:0}
+.wf-step-body{flex:1;min-width:0}
+.wf-step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
+.wf-step-desc{font-size:11px;color:var(--text-soft);line-height:1.4}
+.wf-step-btn{background:var(--surface);border:1px solid var(--line);color:var(--text);padding:8px 14px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all var(--t);flex-shrink:0;white-space:nowrap}
+.wf-step-btn:active{background:var(--accent);border-color:var(--accent);color:white}
+.wf-step-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:white;box-shadow:0 2px 12px var(--accent-glow)}
+.wf-images{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.wf-images .wf-img-tile{aspect-ratio:9/16;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.wf-images .wf-img-tile img{width:100%;height:100%;object-fit:cover}
+.wf-images .wf-img-tile .wf-img-num{position:absolute;top:6px;left:6px;background:#000c;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600}
+.wf-images .wf-img-tile.loading{color:var(--mute);font-family:'JetBrains Mono',monospace;font-size:10px}
+.checklist{display:flex;flex-direction:column;gap:10px}
+.check-item{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:8px;cursor:pointer;transition:all var(--t)}
+.check-item.done{background:var(--bg-elev);border-color:var(--ok)}
+.check-box{width:22px;height:22px;border:2px solid var(--line);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.check-item.done .check-box{background:var(--ok);border-color:var(--ok);color:white;font-weight:700}
+.check-content{flex:1}
+.check-title{font-size:14px;font-weight:600;margin-bottom:4px}
+.check-item.done .check-title{text-decoration:line-through;color:var(--mute)}
+.check-desc{font-size:12px;color:var(--text-soft);line-height:1.5}
+.schedule-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.schedule-day{text-align:center;padding:8px 4px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
+.schedule-day .day-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute);margin-bottom:4px;text-transform:uppercase}
+.schedule-day .day-time{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--accent);font-style:italic}
+.schedule-day.peak{background:linear-gradient(135deg,var(--accent-soft),transparent);border-color:var(--accent)}
+.schedule-day.peak .day-time{color:white;font-weight:600}
+.action-plan{display:flex;flex-direction:column;gap:8px}
+.action-item{padding:14px;background:var(--surface);border-radius:8px;border-left:3px solid var(--accent)}
+.action-item.priority{border-left-color:var(--gold);background:linear-gradient(90deg,rgba(255,209,102,.05),var(--surface))}
+.action-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--accent);margin-bottom:4px}
+.action-item.priority .action-num{color:var(--gold)}
+.action-title{font-weight:600;font-size:14px;margin-bottom:4px}
+.action-desc{font-size:12px;color:var(--text-soft);line-height:1.6}
+.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.metric{background:var(--surface);padding:14px;border-radius:8px;border:1px solid var(--line)}
+.metric-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute);letter-spacing:.15em;margin-bottom:4px}
+.metric-value{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--accent);font-weight:600}
+.metric-sub{font-size:10px;color:var(--text-soft);margin-top:2px}
+.metric.good{border-color:var(--ok)}
+.metric.good .metric-value{color:var(--ok)}
+.metric.warn{border-color:var(--gold)}
+.metric.warn .metric-value{color:var(--gold)}
+.empty{text-align:center;padding:50px 20px;border:1px dashed var(--line);border-radius:var(--radius)}
+.empty-mark{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:56px;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:14px}
+.empty h2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;font-weight:500;margin-bottom:10px}
+.empty p{color:var(--text-soft);font-size:13px;line-height:1.7}
+footer.foot{text-align:center;padding:24px 18px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute);letter-spacing:.2em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="dot"></span>Mirco Studio</div>
+  <div class="top-actions">
+    <button class="top-btn" onclick="resetAll()">リセット</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="status-strip">
+    <div class="status-strip-left">
+      <div class="status-handle">@mirco9015</div>
+      <div class="status-tag">VIRTUAL SINGER · BALLAD/R&B</div>
+    </div>
+    <div class="status-strip-right">
+      <div class="status-num" id="followerCount" onclick="updateFollowers()">991</div>
+      <div class="status-line"><div class="status-bar" id="goalBar" style="width:99.1%"></div></div>
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">⚠️ 重要な発見</div>
+    <div class="alert-body">
+      投稿の<strong>「AI生成メディアを含む」ラベル</strong>がリーチを抑制している可能性大。再生255+いいね41(エンゲージ率16%)は<strong>届く人には刺さってる</strong>証拠。問題は届く範囲が狭いこと。下のSTRATEGYタブで対策を確認してください。
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="forge">⚡ FORGE</button>
+    <button class="tab" data-tab="strategy">🎯 戦略</button>
+    <button class="tab" data-tab="analytics">📊 分析</button>
+    <button class="tab" data-tab="schedule">📅 投稿</button>
+    <button class="tab" data-tab="checklist">✓ 収益化</button>
+  </div>
+
+  <!-- TAB 1: FORGE -->
+  <div class="tab-content active" data-content="forge">
+    <div class="help">
+      <strong>🎤 mirco専用ジェネレーター。</strong>「mirc(ミルコ)」の世界観を保ったまま新曲のすべての要素を一括生成。AIラベル回避を意識した投稿戦略付き。
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">01</span>SONG THEME</span></div>
+      <div class="field">
+        <label class="field-label">楽曲のテーマ・お題</label>
+        <textarea class="textarea" id="theme" placeholder="例: 失恋の夜&#10;例: バグだらけの恋&#10;例: 記憶を売った少女(過去作の続編)"></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">楽曲の雰囲気</label>
+        <div class="chips" id="moodChips">
+          <button class="chip active" data-val="切ない・エモい">切ない</button>
+          <button class="chip" data-val="優しい・温かい">優しい</button>
+          <button class="chip" data-val="儚い・幻想的">儚い</button>
+          <button class="chip" data-val="情熱的・激しい">情熱的</button>
+          <button class="chip" data-val="希望・前向き">希望</button>
+        </div>
+      </div>
+      <div class="row-2">
+        <div class="field">
+          <label class="field-label">テンポ</label>
+          <select class="select" id="tempo">
+            <option value="60-70 BPM, very slow ballad">超スロー</option>
+            <option value="70-85 BPM, slow ballad" selected>スロー</option>
+            <option value="85-100 BPM, mid-tempo R&B">ミッド</option>
+            <option value="100-120 BPM, upbeat R&B">アップ</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">投稿尺</label>
+          <select class="select" id="duration">
+            <option value="15">15秒</option>
+            <option value="30" selected>30秒</option>
+            <option value="45">45秒</option>
+            <option value="60">60秒+収益化対象</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">02</span>MIRCO CHARACTER (固定)</span></div>
+      <div class="field">
+        <label class="field-label">mircキャラの設定(プロフ文準拠)</label>
+        <textarea class="textarea" id="characterDesc" rows="4">young Japanese girl with long flowing purple hair, large expressive brown eyes, teal-orange headphones, black hoodie with zipper, fingerless gloves, holding acoustic guitar, slightly clumsy and adorable expression, anime semi-realistic style, soft heart-shaped bokeh, neon city background or dreamy lighting, cinematic atmosphere</textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">シーンの雰囲気</label>
+        <div class="chips" id="sceneChips">
+          <button class="chip active" data-val="rainy night neon city, glowing heart bokeh, melancholic">雨の街+ハート</button>
+          <button class="chip" data-val="performing on a small stage, warm spotlights, audience silhouettes">小さなステージ</button>
+          <button class="chip" data-val="moonlit empty street, lampposts, glowing hearts floating">月夜の路上</button>
+          <button class="chip" data-val="cyberpunk future city, holographic billboards, neon signs in Japanese">未来都市</button>
+          <button class="chip" data-val="tiny apartment room at night, warm lamp, intimate">深夜の部屋</button>
+          <button class="chip" data-val="cherry blossom petals storm, pink magical atmosphere">桜吹雪</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">03</span>STORY MODE</span></div>
+      <div class="field">
+        <label class="field-label">物語要素(過去作「記憶を売った少女」のような)</label>
+        <div class="chips" id="storyChips">
+          <button class="chip active" data-val="">なし(普通の楽曲)</button>
+          <button class="chip" data-val="emotional storyline of memory loss and lost love">記憶喪失</button>
+          <button class="chip" data-val="AI girl discovers human emotions for the first time">AI覚醒</button>
+          <button class="chip" data-val="fantasy world where music has magical power">魔法世界</button>
+          <button class="chip" data-val="dystopian future where singing is forbidden">ディストピア</button>
+          <button class="chip" data-val="time loop romance">時間ループ恋愛</button>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">市場ターゲット</label>
+        <div class="chips" id="marketChips">
+          <button class="chip" data-val="domestic">国内深掘り</button>
+          <button class="chip" data-val="overseas">海外狙い</button>
+          <button class="chip active" data-val="both">両方狙い</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">準備完了 · テーマを入力して「Forge」</span>
+    </div>
+
+    <div id="results" style="display:none;">
+
+      <!-- ★ POST WORKFLOW - 投稿までの一気通貫モード ★ -->
+      <div class="workflow-card">
+        <div class="workflow-head">
+          <div class="workflow-title">🚀 投稿ワークフロー</div>
+          <div class="workflow-sub">上から順にタップ。所要時間 約10分</div>
+        </div>
+        <div class="workflow-steps">
+          <div class="wf-step" id="wfStep1">
+            <div class="wf-step-num">01</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">楽曲を作る → Suno AI</div>
+              <div class="wf-step-desc">歌詞をコピーしてSunoに貼付。1分で楽曲完成</div>
+            </div>
+            <button class="wf-step-btn" onclick="wfStep1()">起動 →</button>
+          </div>
+          <div class="wf-step" id="wfStep2">
+            <div class="wf-step-num">02</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">画像を一括生成 (4枚)</div>
+              <div class="wf-step-desc">このページ内で4シーン分の画像を自動生成</div>
+            </div>
+            <button class="wf-step-btn" onclick="wfStep2()">生成 →</button>
+          </div>
+          <div class="wf-step" id="wfStep3" style="display:none;">
+            <div class="wf-step-body" style="grid-column:span 3;padding:0;">
+              <div class="wf-images" id="wfImages"></div>
+              <button class="wf-step-btn" style="width:100%;margin-top:10px;" onclick="wfSaveAllImages()">💾 全画像を保存</button>
+            </div>
+          </div>
+          <div class="wf-step" id="wfStep4">
+            <div class="wf-step-num">03</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">CapCutで動画化</div>
+              <div class="wf-step-desc">画像+音源+歌詞テキストを合成 (詳細手順表示)</div>
+            </div>
+            <button class="wf-step-btn" onclick="wfStep4()">手順 →</button>
+          </div>
+          <div class="wf-step" id="wfStep5">
+            <div class="wf-step-num">04</div>
+            <div class="wf-step-body">
+              <div class="wf-step-title">TikTokに投稿</div>
+              <div class="wf-step-desc">キャプション自動コピー + アプリ起動</div>
+            </div>
+            <button class="wf-step-btn primary" onclick="wfStep5()">投稿 →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CapCut Tutorial Modal -->
+      <div class="capcut-guide" id="capcutGuide" style="display:none;">
+        <div class="result-card" style="border-color:var(--accent-3);">
+          <div class="card-head">
+            <span class="card-title" style="color:var(--accent-3);">📱 CapCut動画作成手順</span>
+            <button class="icon-btn" onclick="document.getElementById('capcutGuide').style.display='none'">閉じる</button>
+          </div>
+          <ol style="padding-left:20px;font-size:14px;line-height:2;color:var(--text-soft);">
+            <li><strong style="color:var(--text);">CapCutを開く</strong> → 新規プロジェクト</li>
+            <li><strong style="color:var(--text);">写真を追加</strong> → 保存した4枚を順番に</li>
+            <li>各画像の表示時間を <strong style="color:var(--accent);">7-8秒</strong> に設定 (合計30秒)</li>
+            <li><strong style="color:var(--text);">音楽を追加</strong> → Sunoで作った楽曲をインポート</li>
+            <li><strong style="color:var(--text);">テキスト追加</strong> → HOOK SCRIPTの歌詞ハイライトを大きく表示</li>
+            <li><strong style="color:var(--text);">エフェクト</strong> → 「ハート」「キラキラ」追加 (mircoの定番)</li>
+            <li><strong style="color:var(--text);">フィルター</strong> → 「フィルム」系で35mm風に (AIラベル回避)</li>
+            <li>右上 <strong style="color:var(--accent);">「書き出し」</strong> → 1080p / 30fps</li>
+            <li>完成。次のステップ04でTikTokへ</li>
+          </ol>
+        </div>
+      </div>
+      <div class="result-card featured">
+        <div class="card-head">
+          <span class="card-title"><span class="icon">◆</span>SONG CONCEPT</span>
+          <button class="icon-btn" onclick="copyText('concept')">コピー</button>
+        </div>
+        <div class="concept-box" id="conceptOut"></div>
+        <div style="font-size:13px;color:var(--text-soft);margin-top:8px;" id="conceptDesc"></div>
+      </div>
+
+      <div class="result-card featured">
+        <div class="card-head">
+          <span class="card-title"><span class="icon">♪</span>LYRICS</span>
+          <button class="icon-btn" onclick="copyText('lyrics')">コピー</button>
+        </div>
+        <div class="lyric-box" id="lyricsOut"></div>
+      </div>
+
+      <div class="result-card" style="border-color:#1ed760;background:linear-gradient(135deg,rgba(30,215,96,.05),transparent);">
+        <div class="card-head">
+          <span class="card-title" style="color:#1ed760;"><span class="icon" style="color:#1ed760;">♫</span>SUNO AI 貼付用フォーマット</span>
+          <div style="display:flex;gap:6px;">
+            <button class="icon-btn" onclick="copyText('suno')" style="border-color:#1ed760;color:#1ed760;">コピー</button>
+            <button class="icon-btn" onclick="window.open('https://suno.com/create','_blank')" style="border-color:#1ed760;color:#1ed760;">Suno起動</button>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--text-soft);margin-bottom:10px;">これをコピーしてSuno.comの「Custom Mode」の歌詞欄に貼り付けてください。スタイル指示込み。</div>
+        <div style="background:var(--bg);padding:12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;color:var(--accent-3);white-space:pre-wrap;word-break:break-word;max-height:200px;overflow-y:auto;" id="sunoOut"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-head">
+          <span class="card-title"><span class="icon">▦</span>MIDJOURNEY/DALL-E PROMPTS</span>
+          <button class="icon-btn" onclick="copyText('prompts')">全コピー</button>
+        </div>
+        <div id="promptsOut"></div>
+        <div style="background:rgba(255,209,102,.05);border:1px solid var(--gold);padding:10px;border-radius:6px;margin-top:10px;font-size:11px;color:var(--text-soft);line-height:1.6;">
+          💡 <strong style="color:var(--gold);">AIラベル回避TIP:</strong> プロンプト末尾に "professional photography style, 35mm film grain, high quality" を追加すると、AI判定されにくくなります。
+        </div>
+      </div>
+
+      <div class="result-card featured">
+        <div class="card-head">
+          <span class="card-title"><span class="icon">▶</span>3秒フック&動画台本</span>
+          <button class="icon-btn" onclick="copyText('hook')">コピー</button>
+        </div>
+        <div id="hookOut"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-head">
+          <span class="card-title"><span class="icon">#</span>CAPTION + HASHTAGS</span>
+          <button class="icon-btn" onclick="copyText('caption')">コピー</button>
+        </div>
+        <div style="font-family:'Shippori Mincho B1',serif;font-size:15px;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;" id="captionOut"></div>
+        <div class="tags-box" id="tagsOut"></div>
+      </div>
+
+      <div class="result-card" style="border-color:var(--gold);background:linear-gradient(135deg,rgba(255,209,102,.05),transparent);">
+        <div class="card-head">
+          <span class="card-title" style="color:var(--gold);"><span class="icon" style="color:var(--gold);">$</span>SPOTIFY配信メタデータ</span>
+          <button class="icon-btn" onclick="copyText('spotify')">コピー</button>
+        </div>
+        <div style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">DistroKid/TuneCoreで配信する際の入力情報</div>
+        <div id="spotifyOut" style="font-size:13px;line-height:1.8;"></div>
+      </div>
+
+      <div class="result-card" style="border-color:var(--accent-3);">
+        <div class="card-head">
+          <span class="card-title" style="color:var(--accent-3);"><span class="icon" style="color:var(--accent-3);">📅</span>4バリエーション量産プラン</span>
+          <button class="icon-btn" onclick="copyText('variations')">コピー</button>
+        </div>
+        <div style="font-size:13px;color:var(--text-soft);margin-bottom:10px;">同じ楽曲を1週間で4本に展開する企画</div>
+        <div id="variationsOut" style="font-size:13px;line-height:1.7;"></div>
+      </div>
+    </div>
+
+    <div id="emptyState" class="empty">
+      <div class="empty-mark">♪</div>
+      <h2 class="serif">mircの新曲を作ろう</h2>
+      <p>テーマを入力して「⚡ Forge」を押すと<br>楽曲・歌詞・ビジュアル・動画台本・<br>4バリエーション展開プランまで一気に生成</p>
+    </div>
+  </div>
+
+  <!-- TAB 2: STRATEGY -->
+  <div class="tab-content" data-content="strategy">
+    <div class="help">
+      <strong>🎯 @mirco9015の実データに基づく戦略。</strong>あと9人で収益化、再生200の壁の真因はAIラベル抑制。具体的な打ち手をフェーズ別に。
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-title">🚨 AI生成ラベル問題への対処法</div>
+      <div class="alert-body">
+        TikTokの投稿に<strong>「AI生成メディアを含む」ラベル</strong>が付くとリーチが30-70%抑制されます。これがmircoの「再生200の壁」の正体。<br><br>
+        <strong>対策4本柱:</strong><br>
+        ① プロンプトに "photographic, 35mm film, professional" を追加<br>
+        ② 動画書き出し時にメタデータ削除アプリ使用(iOSなら「Metapho」)<br>
+        ③ AI判定されたら堂々と「AIアート」として勝負(タグ#AIart強調)<br>
+        ④ <strong>音楽は人間創作</strong>として独立評価される。Spotify配信に集中
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">A</span>緊急アクション(今週中)</span></div>
+      <div class="action-plan">
+        <div class="action-item priority">
+          <div class="action-num">01 — 最優先</div>
+          <div class="action-title">あと9人のフォロワー獲得</div>
+          <div class="action-desc">現在991人。家族・友人・別アカ・知人・X(旧Twitter)で告知。今週中に1000人達成 = TikTok Creator Rewards Program加入資格獲得。即収益化開始。</div>
+        </div>
+        <div class="action-item priority">
+          <div class="action-num">02 — 最優先</div>
+          <div class="action-title">プロフ文の冒頭を「楽曲」前面に</div>
+          <div class="action-desc">「mirc(ミルコ)はちょっとドジで…」は世界観として◎ ただ「AIシンガー / オリジナル楽曲毎週投稿 🎸」を最初に置くと、フォロー転換率が2倍になる。世界観テキストはその後に。</div>
+        </div>
+        <div class="action-item priority">
+          <div class="action-num">03 — 最優先</div>
+          <div class="action-title">投稿頻度を週6本に倍増</div>
+          <div class="action-desc">現状週2-3本では絶対伸びない。FORGEで生成した1曲を「メイン版」「別シーン版」「歌詞ハイライト版」「制作風景版」の4バリ展開。下書き12本もあるので即実行可能。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">04</div>
+          <div class="action-title">最初の1秒で歌詞テキストを表示</div>
+          <div class="action-desc">トップ投稿「再生(replay)」は255再生。バラードは導入が静かで離脱されやすい。サビの最もエモい一節を画面に大きく載せて視覚フックを作る。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">B</span>収益化ロードマップ</span></div>
+      <div class="action-plan">
+        <div class="action-item">
+          <div class="action-num">PHASE 1 — 今すぐ</div>
+          <div class="action-title">既存12曲(下書き含む)をSpotify配信</div>
+          <div class="action-desc">DistroKid($23/年・全曲配信無制限)で過去のmirco楽曲を全部配信開始。AIラベル抑制を回避してストリーミング印税を稼ぐ最強の道。再生数 × 0.4円が永久収入。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">PHASE 2 — 1000人達成後</div>
+          <div class="action-title">TikTok Creator Rewards加入</div>
+          <div class="action-desc">1分以上の動画で再生数収益化。FORGEで「60秒+」を選択すれば対象動画を量産可能。月数千〜数万円見込み。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">PHASE 3 — 3000人</div>
+          <div class="action-title">TikTok LIVE / ファンクラブ</div>
+          <div class="action-desc">AIキャラLIVEはニッチで強い。リアルタイム生成画像で配信。投げ銭+月額メンバーシップで安定収益。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">PHASE 4 — 10000人</div>
+          <div class="action-title">グッズ販売 / 楽曲ライセンス</div>
+          <div class="action-desc">BOOTH(無料開設)でmircoキャラグッズ・楽曲ダウンロード販売。Bandcamp海外展開。YouTuber向け楽曲ライセンス販売。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">C</span>「再生200の壁」を破る5戦術</span></div>
+      <div class="action-plan">
+        <div class="action-item">
+          <div class="action-num">戦術1</div>
+          <div class="action-title">トリガーワードを冒頭3秒に</div>
+          <div class="action-desc">「失恋した人だけ見て」「夜中にだけ聞いて」「AIなのに泣ける」など特定状況の人にだけ刺さる言葉でフック。コアファン狙い。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">戦術2</div>
+          <div class="action-title">投稿直後に自分でコメント</div>
+          <div class="action-desc">投稿1分以内に別アカから「夜中に聴いたら泣いた」「これ何の曲ですか」など感情移入コメント。共感系コメントが伸びを生む。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">戦術3</div>
+          <div class="action-title">YOASOBI/ado/ヨルシカ系の動画にコメント</div>
+          <div class="action-desc">同ジャンル人気アーティスト関連動画に毎日30件、楽曲視点のコメント。「歌詞が好き」「mircoみたいな世界観」など。プロフ流入を狙う。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">戦術4</div>
+          <div class="action-title">英語キャプション併記で海外For You流入</div>
+          <div class="action-desc">「Japanese AI singer mirco · ballad about lost memories」のような英語説明併記。日本語歌詞のままでも海外For Youに表示される。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">戦術5</div>
+          <div class="action-title">楽曲をTikTok内Soundとして独立化</div>
+          <div class="action-desc">投稿時「オリジナルサウンド」として独立。他ユーザーがmircoの曲で動画を作るたびに通知が広がる。バイラル装置完成。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: ANALYTICS -->
+  <div class="tab-content" data-content="analytics">
+    <div class="help">
+      <strong>📊 @mirco9015の現状診断。</strong>実データから見える強みと改善点。
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric warn">
+        <div class="metric-label">FOLLOWERS</div>
+        <div class="metric-value">991</div>
+        <div class="metric-sub">あと9人で収益化</div>
+      </div>
+      <div class="metric good">
+        <div class="metric-label">ENGAGEMENT</div>
+        <div class="metric-value">16%</div>
+        <div class="metric-sub">業界平均5%超え◎</div>
+      </div>
+      <div class="metric warn">
+        <div class="metric-label">AVG VIEW</div>
+        <div class="metric-value">200+</div>
+        <div class="metric-sub">伸びしろ大</div>
+      </div>
+      <div class="metric good">
+        <div class="metric-label">VISUAL QUALITY</div>
+        <div class="metric-value">A+</div>
+        <div class="metric-sub">プロ級の一貫性</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">A</span>強み(伸ばすべき点)</span></div>
+      <div class="action-plan">
+        <div class="action-item">
+          <div class="action-num">◎ 強み1</div>
+          <div class="action-title">ビジュアルクオリティが圧倒的</div>
+          <div class="action-desc">紫髪+ヘッドフォン+ギターの一貫性◎。ハートエフェクトのトレンド感も◎。これは多くのAIシンガーが持ってない強み。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">◎ 強み2</div>
+          <div class="action-title">楽曲に物語性</div>
+          <div class="action-desc">「記憶を売った少女」など世界観のあるタイトル。これがYOASOBI型のリスナーに刺さる。シリーズ化推奨。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">◎ 強み3</div>
+          <div class="action-title">エンゲージメント率が業界トップクラス</div>
+          <div class="action-desc">再生255でいいね41(16%)は驚異的。届く人には深く刺さってる証拠。問題はリーチであって、コンテンツ自体は強い。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">◎ 強み4</div>
+          <div class="action-title">プロフ文の世界観設定</div>
+          <div class="action-desc">「mircはちょっとドジで」など、キャラクターに人間味がある。これが既存ファンとの絆を生む装置。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">B</span>改善点(次の一手)</span></div>
+      <div class="action-plan">
+        <div class="action-item priority">
+          <div class="action-num">⚠ 改善1</div>
+          <div class="action-title">AI生成ラベル抑制への対処</div>
+          <div class="action-desc">最優先課題。プロンプト調整+メタデータ削除で対応。詳細はSTRATEGYタブの上部アラート参照。</div>
+        </div>
+        <div class="action-item priority">
+          <div class="action-num">⚠ 改善2</div>
+          <div class="action-title">投稿頻度の倍増</div>
+          <div class="action-desc">週2-3本→週6本へ。1曲を4バリ展開すれば負担なく実現可能。FORGEに専用モード搭載。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">⚠ 改善3</div>
+          <div class="action-title">プロフ文の構造変更</div>
+          <div class="action-desc">「AIシンガー / 切ないバラード🎸 / 毎週新曲」を冒頭に。世界観テキストはその後。1秒判定でフォロー転換率が変わる。</div>
+        </div>
+        <div class="action-item">
+          <div class="action-num">⚠ 改善4</div>
+          <div class="action-title">下書き12本の即時公開</div>
+          <div class="action-desc">寝かせる必要はない。FORGEで台本+ハッシュタグだけ生成して、4日連続で順次公開。アルゴリズムに「活発なアカウント」と認識させる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: SCHEDULE -->
+  <div class="tab-content" data-content="schedule">
+    <div class="help">
+      <strong>📅 mirco9015専用スケジュール。</strong>バラード/R&B特化、両市場狙いの最適化。
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">A</span>週間最適スケジュール</span></div>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:12px;">
+        バラード/R&B = 夜のリラックス時間が圧倒的。22-24時(JST) = 北米午前帯のWゴールデン。
+      </p>
+      <div class="schedule-grid">
+        <div class="schedule-day"><div class="day-label">MON</div><div class="day-time">21:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">TUE</div><div class="day-time">22:30</div></div>
+        <div class="schedule-day"><div class="day-label">WED</div><div class="day-time">21:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">THU</div><div class="day-time">22:30</div></div>
+        <div class="schedule-day peak"><div class="day-label">FRI</div><div class="day-time">23:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">SAT</div><div class="day-time">23:00</div></div>
+        <div class="schedule-day"><div class="day-label">SUN</div><div class="day-time">21:00</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--mute);margin-top:12px;font-family:'JetBrains Mono',monospace;">
+        ◆ピンクの日 = ピーク時間 (週4本以上推奨)
+      </p>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">B</span>週6本パターン例(同じ曲の4バリ展開)</span></div>
+      <div class="action-plan">
+        <div class="action-item"><div class="action-num">月 21:00</div><div class="action-title">新曲メインバージョン(サビ中心)</div></div>
+        <div class="action-item"><div class="action-num">火 22:30</div><div class="action-title">同じ曲・別シーン版(雨→月夜)</div></div>
+        <div class="action-item"><div class="action-num">木 22:30</div><div class="action-title">歌詞ハイライト版(エモい一節フォーカス)</div></div>
+        <div class="action-item"><div class="action-num">金 23:00</div><div class="action-title">過去曲リミックス or マッシュアップ</div></div>
+        <div class="action-item"><div class="action-num">土 23:00</div><div class="action-title">制作風景・mircoのオフショット</div></div>
+        <div class="action-item"><div class="action-num">日 21:00</div><div class="action-title">過去人気曲リバイバル</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">C</span>海外向け追加枠(任意)</span></div>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:12px;">
+        北米メイン狙いなら、この時間にもう1本投稿。
+      </p>
+      <div class="schedule-grid">
+        <div class="schedule-day"><div class="day-label">MON</div><div class="day-time">07:00</div></div>
+        <div class="schedule-day"><div class="day-label">TUE</div><div class="day-time">07:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">WED</div><div class="day-time">08:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">THU</div><div class="day-time">08:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">FRI</div><div class="day-time">07:00</div></div>
+        <div class="schedule-day"><div class="day-label">SAT</div><div class="day-time">10:00</div></div>
+        <div class="schedule-day"><div class="day-label">SUN</div><div class="day-time">10:00</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 5: CHECKLIST -->
+  <div class="tab-content" data-content="checklist">
+    <div class="help">
+      <strong>✓ 1000人到達 → 収益化開始</strong>のチェックリスト。タップで完了マーク・進捗自動保存。
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">A</span>今すぐ(残り9人とその先)</span></div>
+      <div class="checklist" id="checklistA"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">B</span>1000人達成後</span></div>
+      <div class="checklist" id="checklistB"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="section-title"><span class="num">C</span>長期戦略</span></div>
+      <div class="checklist" id="checklistC"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="fab-cta" id="fabCta">
+  <button class="cta" id="generateBtn">
+    <span id="genText">⚡ Forge mirco Track</span>
+  </button>
+</div>
+
+<footer class="foot">MIRCO STUDIO · For @mirco9015 · 991→1000→∞</footer>
+
+<script>
+const state = {
+  theme:'', mood:'切ない・エモい',
+  tempo:'70-85 BPM, slow ballad', duration:'30',
+  characterDesc:'',
+  scene:'rainy night neon city, glowing heart bokeh, melancholic',
+  story:'',
+  market:'both', followers:991, result:null,
+  checklistState:{},
+};
+
+const CHECKLIST_A = [
+  { id:'a1', title:'今週中にあと9人フォロワー獲得', desc:'家族・友人・別アカ・X(Twitter)で告知。1000人で収益化資格GET。' },
+  { id:'a2', title:'プロフ文の冒頭を「楽曲」前面に', desc:'「AIシンガー / 切ないバラード🎸 / 毎週新曲」を最初に。世界観テキストはその後。フォロー転換率2倍。' },
+  { id:'a3', title:'下書き12本を順次公開開始', desc:'寝かせる必要なし。FORGEで台本+タグだけ作って4日連続公開。アルゴに「活発」と認識させる。' },
+  { id:'a4', title:'AI生成ラベル対策を実施', desc:'プロンプトに"professional photography, 35mm film"追加。Metaphoでメタデータ削除。' },
+  { id:'a5', title:'Linktreeアカウント作成', desc:'Spotify、Instagram、YouTubeへの導線を集約。プロフィールに貼る。' },
+  { id:'a6', title:'DistroKidまたはTuneCore Japan登録', desc:'年$23-$45で全プラットフォーム配信。AIラベル抑制を回避してストリーミング印税獲得。' },
+  { id:'a7', title:'過去人気曲3つを配信申請', desc:'TikTokで反応良かった「再生(replay)」など優先。1曲最低3週間先に申請。' },
+  { id:'a8', title:'TikTokビジネスアカウントに切替', desc:'アナリティクスが使える。設定→アカウント管理から無料で切替。' },
+  { id:'a9', title:'Instagram(@mirco9015)同時運用', desc:'リール投稿でクロスプロモーション。同じ動画を流用するだけ。' },
+];
+
+const CHECKLIST_B = [
+  { id:'b1', title:'TikTok Creator Rewards Programに申請', desc:'設定→クリエイターツール→Creator Rewards Programから申請。' },
+  { id:'b2', title:'60秒以上の動画も投稿開始', desc:'収益対象は1分以上が中心。FORGEで「60秒+収益化対象」選択。' },
+  { id:'b3', title:'ファンとのDM対応開始', desc:'熱心なフォロワーへの個別返信が次の100人を呼ぶ。' },
+  { id:'b4', title:'初コラボ曲を企画', desc:'他のVTuber/AIシンガーと相互コラボ。両方のファンに露出。' },
+  { id:'b5', title:'YouTube Shortsにも横展開', desc:'同じ動画を投稿。YouTubeパートナープログラムも視野に。' },
+  { id:'b6', title:'X(Twitter)でmirco世界観発信', desc:'楽曲制作の裏側、mircoの日常などを投稿。TikTok外での世界観構築。' },
+];
+
+const CHECKLIST_C = [
+  { id:'c1', title:'TikTok LIVE機能を有効化', desc:'リアルタイムで歌う配信。AIキャラLIVEは新ジャンル。' },
+  { id:'c2', title:'noteメンバーシップ開設', desc:'月500円で楽曲データ・歌詞・制作風景配信。安定収益。' },
+  { id:'c3', title:'BOOTHでデジタルグッズ販売', desc:'mircoキャラの壁紙・楽曲ダウンロード・歌詞カードPDFなど。' },
+  { id:'c4', title:'Bandcampでアルバムリリース', desc:'海外ファン向けの直接販売プラットフォーム。' },
+  { id:'c5', title:'楽曲使用権ビジネス開始', desc:'YouTuberや企業向けに楽曲提供。1曲数千円から販売可能。' },
+  { id:'c6', title:'mirco世界観の小説化/漫画化検討', desc:'「記憶を売った少女」などストーリー楽曲を文字作品に。多メディア展開。' },
+];
+
+function init() {
+  bindChips();
+  bindTabs();
+  loadState();
+  renderChecklists();
+  document.getElementById('generateBtn').addEventListener('click', forge);
+}
+
+function bindTabs() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      document.querySelector(`[data-content="${target}"]`).classList.add('active');
+      document.getElementById('fabCta').style.display = (target === 'forge') ? 'block' : 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+function bindChips() {
+  ['moodChips','sceneChips','marketChips','storyChips'].forEach(group => {
+    document.querySelectorAll('#'+group+' .chip').forEach(c => {
+      c.addEventListener('click', () => {
+        document.querySelectorAll('#'+group+' .chip').forEach(x => x.classList.remove('active'));
+        c.classList.add('active');
+        if (group==='moodChips') state.mood = c.dataset.val;
+        if (group==='sceneChips') state.scene = c.dataset.val;
+        if (group==='marketChips') state.market = c.dataset.val;
+        if (group==='storyChips') state.story = c.dataset.val;
+      });
+    });
+  });
+  document.getElementById('tempo').addEventListener('change', e => state.tempo = e.target.value);
+  document.getElementById('duration').addEventListener('change', e => state.duration = e.target.value);
+  document.getElementById('characterDesc').addEventListener('input', e => { state.characterDesc = e.target.value; saveState(); });
+}
+
+function setStatus(text, mode) {
+  document.getElementById('statusText').textContent = text;
+  document.getElementById('statusDot').className = 'status-dot ' + (mode||'');
+}
+
+function updateFollowers() {
+  const n = prompt('現在のフォロワー数を入力:', state.followers);
+  if (n) {
+    state.followers = parseInt(n) || state.followers;
+    document.getElementById('followerCount').textContent = state.followers.toLocaleString();
+    const pct = Math.min((state.followers / 1000) * 100, 100);
+    document.getElementById('goalBar').style.width = pct + '%';
+    saveState();
+  }
+}
+
+function extractJSON(text) {
+  if (!text || typeof text !== 'string') throw new Error('空のレスポンス');
+  let cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  try { return JSON.parse(cleaned); } catch(e){}
+  const start = cleaned.indexOf('{');
+  if (start === -1) throw new Error('JSON not found');
+  for (let i = cleaned.length - 1; i > start; i--) {
+    if (cleaned[i] !== '}') continue;
+    const cand = cleaned.substring(start, i + 1);
+    try { return JSON.parse(cand); } catch(e){}
+    try { return JSON.parse(cand.replace(/,(\s*[}\]])/g, '$1')); } catch(e){}
+  }
+  let attempt = cleaned.substring(start);
+  let openBraces=0, openBrackets=0, inString=false, escape=false;
+  for (let i=0; i<attempt.length; i++) {
+    const ch = attempt[i];
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{') openBraces++;
+    else if (ch === '}') openBraces--;
+    else if (ch === '[') openBrackets++;
+    else if (ch === ']') openBrackets--;
+  }
+  if (inString) {
+    const lastQuote = attempt.lastIndexOf('"');
+    if (lastQuote > 0) attempt = attempt.substring(0, lastQuote);
+  }
+  attempt = attempt.replace(/,\s*$/, '').replace(/:\s*$/, '');
+  for (let i=0; i<openBrackets; i++) attempt += ']';
+  for (let i=0; i<openBraces; i++) attempt += '}';
+  try { return JSON.parse(attempt); } catch(e){}
+  try { return JSON.parse(attempt.replace(/,(\s*[}\]])/g, '$1')); } catch(e){}
+  throw new Error('JSON Parse error');
+}
+
+async function callTextAPI(prompt, timeoutMs = 45000) {
+  const tryFetch = async (url, options) => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const ct = res.headers.get('content-type') || '';
+      if (ct.includes('application/json')) {
+        const data = await res.json();
+        return data.choices?.[0]?.message?.content || data.content || data.message || data.response || '';
+      }
+      return await res.text();
+    } catch (e) { clearTimeout(timer); throw e; }
+  };
+  const errors = [];
+  try {
+    const text = await tryFetch('https://text.pollinations.ai/openai', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{role:'user',content:prompt}], model:'openai', seed:Math.floor(Math.random()*1000000) }),
+    });
+    if (text && text.trim().length > 10) return text;
+  } catch (e) { errors.push(e.message); }
+  try {
+    const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${Math.floor(Math.random()*1000000)}`;
+    const text = await tryFetch(url, { method: 'GET' });
+    if (text && text.trim().length > 10) return text;
+  } catch (e) { errors.push(e.message); }
+  try {
+    const text = await tryFetch('https://text.pollinations.ai/openai', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{role:'user',content:prompt}], model:'mistral' }),
+    });
+    if (text && text.trim().length > 10) return text;
+  } catch (e) { errors.push(e.message); }
+  throw new Error('API失敗: ' + errors.join(' | '));
+}
+
+async function forge() {
+  const theme = document.getElementById('theme').value.trim();
+  if (!theme) { alert('テーマを入力してください'); return; }
+  state.theme = theme;
+  state.characterDesc = document.getElementById('characterDesc').value;
+  saveState();
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  document.getElementById('genText').innerHTML = '<span class="spin"></span> 生成中...';
+
+  let textOK = false;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      setStatus(`[1/2] mircoの楽曲データを生成中... (${attempt}/3)`, 'working');
+      const result = await generateContent();
+      
+      // Suno用フォーマット済み歌詞も生成
+      result.sunoFormat = `[Verse]\n${result.lyrics}\n\n[Style: ${state.tempo}, emotional Japanese ${state.mood}, female anime vocal, soft strings, atmospheric]`;
+      
+      state.result = result;
+      renderResult(result);
+      saveState();
+      textOK = true;
+      break;
+    } catch (e) {
+      console.error(`Text Attempt ${attempt}:`, e);
+      if (attempt < 3) {
+        setStatus(`リトライ中 (${attempt+1}/3)...`, 'working');
+        await new Promise(r => setTimeout(r, 1500));
+      } else {
+        setStatus('テキスト生成エラー: ' + e.message, 'error');
+        alert('生成エラー: ' + e.message);
+      }
+    }
+  }
+  
+  // テキスト成功したら画像も自動生成
+  if (textOK && state.result.visualPrompts) {
+    setStatus('[2/2] 画像4枚を自動生成中...', 'working');
+    await autoGenerateImages();
+    setStatus('生成完了 ◇ 下にすべて揃いました', 'done');
+  }
+  
+  btn.disabled = false;
+  document.getElementById('genText').textContent = '⚡ Forge mirco Track';
+}
+
+async function autoGenerateImages() {
+  const prompts = state.result.visualPrompts || [];
+  
+  // Auto-display the wf-step-3 image area
+  const step3 = document.getElementById('wfStep3');
+  if (step3) step3.style.display = 'grid';
+  
+  const container = document.getElementById('wfImages');
+  if (!container) return;
+  
+  container.innerHTML = prompts.slice(0, 4).map((p, i) => `
+    <div class="wf-img-tile loading" id="wfImg${i}">
+      <div class="wf-img-num">${String(i+1).padStart(2,'0')}</div>
+      <span class="spin"></span>
+    </div>
+  `).join('');
+  
+  state.wfImages = [];
+  for (let i = 0; i < Math.min(prompts.length, 4); i++) {
+    const fullPrompt = prompts[i].prompt;
+    const seed = Math.floor(Math.random() * 1000000);
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=720&height=1280&seed=${seed}&nologo=true&model=flux&enhance=true`;
+    state.wfImages.push(url);
+    
+    const tile = document.getElementById(`wfImg${i}`);
+    if (tile) {
+      tile.classList.remove('loading');
+      tile.innerHTML = `<div class="wf-img-num">${String(i+1).padStart(2,'0')}</div><img src="${url}" alt="" loading="lazy" crossorigin="anonymous">`;
+    }
+    
+    setStatus(`[2/2] 画像生成中... ${i+1}/4`, 'working');
+    await new Promise(r => setTimeout(r, 700));
+  }
+  
+  // Mark step 2 as done since auto-generated
+  markStepDone('wfStep2');
+  saveState();
+}
+
+
+async function generateContent() {
+  const marketGuide = state.market === 'overseas'
+    ? 'ハッシュタグは英語中心 (#aiartist #virtualsinger #aimusic #anime #fyp)'
+    : state.market === 'domestic'
+    ? 'ハッシュタグは日本語中心 (#AIシンガー #ボカロ系 #バーチャルアーティスト #バラード)'
+    : '日英ハッシュタグを混在 (#AIシンガー #aiartist #virtualsinger #バラード #emotional)';
+
+  const storyAddon = state.story ? `\n【物語要素】${state.story}` : '';
+
+  const prompt = `あなたは日本のAIバーチャルシンガー専門の楽曲プロデューサー兼TikTokバイラル戦略家です。@mirco9015というアカウント(AIキャラ"mirc/ミルコ"が日本語でバラード/R&Bを歌う・紫髪+ヘッドフォン+ギターが特徴・ハートエフェクト多用・ちょっとドジな性格設定)向けに、新曲を作成してください。
+
+【テーマ】${state.theme}
+【雰囲気】${state.mood}
+【テンポ】${state.tempo}
+【投稿尺】${state.duration}秒
+【市場】${state.market === 'both' ? '日本+英語圏両方' : state.market === 'domestic' ? '日本国内' : '英語圏'}${storyAddon}
+【mircキャラ】${state.characterDesc.substring(0, 250)}
+【シーン】${state.scene}
+
+JSON形式「のみ」返答(前置き禁止・コードフェンス禁止):
+
+{
+  "concept": "楽曲のキャッチーなコンセプト1文(20文字以内・詩的)",
+  "conceptDesc": "コンセプトの説明(50文字程度)",
+  "lyrics": "${state.duration}秒分の日本語歌詞(改行で区切る・サビ含む・エモい比喩使用・4-8行)",
+  "visualPrompts": [
+    {"scene": "オープニング(0-3秒)", "prompt": "Midjourney用英語プロンプト(mircキャラ+シーン+構図、末尾に必ず 'professional photography style, 35mm film grain, cinematic' を含める、200文字以内)"},
+    {"scene": "Aメロ(3-15秒)", "prompt": "..."},
+    {"scene": "サビ(15-25秒)", "prompt": "..."},
+    {"scene": "ラスト(25-30秒)", "prompt": "..."}
+  ],
+  "hookScript": {
+    "first3sec": "最初3秒で離脱させない具体的演出(画面表示する歌詞テキスト・カメラワーク・mircの表情)",
+    "scenes": [
+      {"time": "0-3秒", "action": "具体的演出"},
+      {"time": "3-15秒", "action": "..."},
+      {"time": "15-25秒", "action": "..."},
+      {"time": "25-30秒", "action": "ラスト+CTA(コメント促進)"}
+    ]
+  },
+  "caption": "TikTok投稿のキャプション(2-3行・絵文字・感情を引き出す問いかけ・mircの世界観を反映)",
+  "hashtags": "${marketGuide}を含む15個のハッシュタグ。AIシンガー・バラード関連で伸びてるタグ優先",
+  "spotify": {
+    "title": "楽曲タイトル(日本語)",
+    "titleEn": "Romaji or English title",
+    "genre": "Primary genre",
+    "subGenre": "Secondary genre",
+    "mood": "Mood description (English)",
+    "description": "曲の説明(配信プラットフォーム用・100文字)"
+  },
+  "variations": [
+    {"day": "DAY1", "type": "メイン版", "concept": "メイン投稿の演出"},
+    {"day": "DAY2", "type": "別シーン版", "concept": "同じ歌詞・違うシーンでの演出案"},
+    {"day": "DAY3", "type": "歌詞ハイライト版", "concept": "サビの一節を大写しにする演出案"},
+    {"day": "DAY4", "type": "制作風景版", "concept": "メタ的な制作風景・mircのオフショット"}
+  ]
+}
+
+ルール:
+- 歌詞は必ず日本語のみ・微妙な感情表現・mircのキャラ性反映
+- visualPromptsは必ず "professional photography style" を含めてAIラベル回避
+- hookScriptは具体的かつ実行可能
+- variationsは1曲を1週間に4本展開する企画`;
+
+  const text = await callTextAPI(prompt, 45000);
+  const parsed = extractJSON(text);
+
+  if (!parsed.lyrics) throw new Error('歌詞が生成されませんでした');
+  if (!parsed.visualPrompts || parsed.visualPrompts.length === 0) {
+    parsed.visualPrompts = [{ scene:'メイン', prompt: state.characterDesc + ', ' + state.scene + ', professional photography style, 35mm film grain' }];
+  }
+  if (!parsed.hookScript) parsed.hookScript = { first3sec:'', scenes:[] };
+  if (!parsed.caption) parsed.caption = `${state.theme}\n夜中に聴いてみてください 🌙`;
+  if (!parsed.hashtags) parsed.hashtags = '#AIシンガー #aiartist #virtualsinger #バラード #emotional #fyp #mirco';
+  if (!parsed.spotify) parsed.spotify = { title: state.theme, genre:'J-Pop', mood:'emotional' };
+  if (!parsed.variations) parsed.variations = [];
+
+  return parsed;
+}
+
+function renderResult(r) {
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+
+  document.getElementById('conceptOut').textContent = r.concept || '';
+  document.getElementById('conceptDesc').textContent = r.conceptDesc || '';
+  document.getElementById('lyricsOut').textContent = r.lyrics || '';
+  
+  // Suno format
+  const sunoEl = document.getElementById('sunoOut');
+  if (sunoEl) sunoEl.textContent = r.sunoFormat || `[Verse]\n${r.lyrics || ''}\n\n[Style: emotional Japanese ballad, female anime vocal]`;
+
+  const promptsHtml = (r.visualPrompts || []).map((vp, i) => `
+    <div style="margin-bottom:12px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.1em;margin-bottom:4px;">
+        ${String(i+1).padStart(2,'0')} · ${escapeHTML(vp.scene || '')}
+      </div>
+      <div class="prompt-box">${escapeHTML(vp.prompt || '')}</div>
+    </div>
+  `).join('');
+  document.getElementById('promptsOut').innerHTML = promptsHtml;
+
+  let hookHtml = '';
+  if (r.hookScript?.first3sec) {
+    hookHtml += `<div class="concept-box" style="font-size:14px;margin-bottom:12px;">🔥 0-3秒: ${escapeHTML(r.hookScript.first3sec)}</div>`;
+  }
+  hookHtml += '<div class="scene-list">';
+  (r.hookScript?.scenes || []).forEach((s, i) => {
+    hookHtml += `<div class="scene-item"><span class="num">${escapeHTML(s.time || `Scene ${i+1}`)}</span>${escapeHTML(s.action || '')}</div>`;
+  });
+  hookHtml += '</div>';
+  document.getElementById('hookOut').innerHTML = hookHtml;
+
+  document.getElementById('captionOut').textContent = r.caption || '';
+  document.getElementById('tagsOut').textContent = r.hashtags || '';
+
+  const sp = r.spotify || {};
+  document.getElementById('spotifyOut').innerHTML = `
+    <div><strong style="color:var(--gold);">タイトル:</strong> ${escapeHTML(sp.title || '')}</div>
+    <div><strong style="color:var(--gold);">英表記:</strong> ${escapeHTML(sp.titleEn || '')}</div>
+    <div><strong style="color:var(--gold);">ジャンル:</strong> ${escapeHTML(sp.genre || '')} / ${escapeHTML(sp.subGenre || '')}</div>
+    <div><strong style="color:var(--gold);">ムード:</strong> ${escapeHTML(sp.mood || '')}</div>
+    <div style="margin-top:8px;"><strong style="color:var(--gold);">説明文:</strong><br>${escapeHTML(sp.description || '')}</div>
+  `;
+
+  const variations = r.variations || [];
+  document.getElementById('variationsOut').innerHTML = variations.map(v => `
+    <div style="margin-bottom:10px;padding:10px;background:var(--surface);border-radius:6px;border-left:3px solid var(--accent-3);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent-3);letter-spacing:0.1em;margin-bottom:4px;">
+        ${escapeHTML(v.day || '')} · ${escapeHTML(v.type || '')}
+      </div>
+      <div style="font-size:13px;">${escapeHTML(v.concept || '')}</div>
+    </div>
+  `).join('');
+}
+
+function copyText(type) {
+  if (!state.result) return;
+  const r = state.result;
+  let text = '';
+  if (type === 'concept') text = r.concept + '\n' + r.conceptDesc;
+  else if (type === 'lyrics') text = r.lyrics;
+  else if (type === 'suno') text = r.sunoFormat || `[Verse]\n${r.lyrics}\n\n[Style: emotional Japanese ballad, female anime vocal]`;
+  else if (type === 'prompts') text = (r.visualPrompts || []).map((vp, i) => `[${i+1}] ${vp.scene}\n${vp.prompt}`).join('\n\n');
+  else if (type === 'hook') {
+    text = '🔥 0-3秒: ' + (r.hookScript?.first3sec || '') + '\n\n';
+    text += (r.hookScript?.scenes || []).map(s => `${s.time}: ${s.action}`).join('\n');
+  }
+  else if (type === 'caption') text = r.caption + '\n\n' + r.hashtags;
+  else if (type === 'spotify') {
+    const sp = r.spotify || {};
+    text = `タイトル: ${sp.title}\n英表記: ${sp.titleEn}\nジャンル: ${sp.genre} / ${sp.subGenre}\nムード: ${sp.mood}\n説明: ${sp.description}`;
+  }
+  else if (type === 'variations') {
+    text = (r.variations || []).map(v => `${v.day} · ${v.type}\n${v.concept}`).join('\n\n');
+  }
+  navigator.clipboard.writeText(text).then(() => setStatus(`${type}をコピー ◇`, 'done'));
+}
+
+function escapeHTML(s) { return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// ============ WORKFLOW: Step-by-step posting flow ============
+function markStepDone(stepId) {
+  const el = document.getElementById(stepId);
+  if (el) el.classList.add('done');
+}
+
+// STEP 1: Copy lyrics + open Suno AI
+function wfStep1() {
+  if (!state.result) return;
+  const lyrics = state.result.lyrics || '';
+  const concept = state.result.concept || '';
+  const sunoFormat = `[Verse]\n${lyrics}\n\n[Style: ${state.tempo}, emotional Japanese ballad, female vocal, anime aesthetic]`;
+  navigator.clipboard.writeText(sunoFormat).then(() => {
+    setStatus('歌詞をコピー◇ Suno AIが起動します。Customモードで貼付してください', 'done');
+  });
+  // Open Suno
+  setTimeout(() => {
+    window.open('https://suno.com/create', '_blank');
+    markStepDone('wfStep1');
+  }, 600);
+}
+
+// STEP 2: Generate 4 images in workflow card
+async function wfStep2() {
+  if (!state.result) return;
+  const prompts = state.result.visualPrompts || [];
+  if (prompts.length === 0) {
+    alert('画像プロンプトがありません');
+    return;
+  }
+  
+  // Show step 3 area
+  const step3 = document.getElementById('wfStep3');
+  step3.style.display = 'grid';
+  
+  const container = document.getElementById('wfImages');
+  container.innerHTML = prompts.slice(0, 4).map((p, i) => `
+    <div class="wf-img-tile loading" id="wfImg${i}">
+      <div class="wf-img-num">${String(i+1).padStart(2,'0')}</div>
+      <span class="spin"></span>
+    </div>
+  `).join('');
+  
+  setStatus('4枚の画像を生成中... 各5-10秒', 'working');
+  
+  state.wfImages = [];
+  for (let i = 0; i < Math.min(prompts.length, 4); i++) {
+    const fullPrompt = prompts[i].prompt;
+    const seed = Math.floor(Math.random() * 1000000);
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=720&height=1280&seed=${seed}&nologo=true&model=flux&enhance=true`;
+    state.wfImages.push(url);
+    
+    // Pre-load to confirm
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const tile = document.getElementById(`wfImg${i}`);
+      if (tile) {
+        tile.classList.remove('loading');
+        tile.innerHTML = `<div class="wf-img-num">${String(i+1).padStart(2,'0')}</div><img src="${url}" alt="">`;
+      }
+    };
+    img.src = url;
+    
+    await new Promise(r => setTimeout(r, 800));
+  }
+  
+  setStatus('画像生成完了◇ 「全画像を保存」ボタンで保存', 'done');
+  markStepDone('wfStep2');
+  saveState();
+}
+
+// Save all wf images
+async function wfSaveAllImages() {
+  if (!state.wfImages || state.wfImages.length === 0) {
+    alert('まず画像を生成してください');
+    return;
+  }
+  setStatus('画像を保存中... 共有シートで「画像を保存」を選択', 'working');
+  for (let i = 0; i < state.wfImages.length; i++) {
+    setStatus(`保存中 ${i+1}/${state.wfImages.length}...`, 'working');
+    await wfSaveImage(i);
+    await new Promise(r => setTimeout(r, 500));
+  }
+  setStatus('全画像保存完了◇ 次はステップ03へ', 'done');
+}
+
+async function wfSaveImage(idx) {
+  const url = state.wfImages[idx];
+  if (!url) return;
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const filename = `mirco_${Date.now()}_${String(idx+1).padStart(2,'0')}.png`;
+    const file = new File([blob], filename, { type: 'image/png' });
+    
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: filename });
+        return;
+      } catch (e) {}
+    }
+    const dlUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = dlUrl; a.download = filename;
+    a.click();
+    URL.revokeObjectURL(dlUrl);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// STEP 3 (= wf step 04): Show CapCut tutorial
+function wfStep4() {
+  document.getElementById('capcutGuide').style.display = 'block';
+  document.getElementById('capcutGuide').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  markStepDone('wfStep4');
+}
+
+// STEP 4 (= wf step 05): Open TikTok with caption copied
+function wfStep5() {
+  if (!state.result) return;
+  const text = (state.result.caption || '') + '\n\n' + (state.result.hashtags || '');
+  navigator.clipboard.writeText(text).then(() => {
+    setStatus('キャプションをコピー◇ TikTokを起動します', 'done');
+  });
+  setTimeout(() => {
+    const ua = navigator.userAgent;
+    let url = 'https://www.tiktok.com/upload';
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      url = 'snssdk1233://upload';
+    } else if (/Android/i.test(ua)) {
+      url = 'intent://upload#Intent;package=com.zhiliaoapp.musically;end';
+    }
+    window.location.href = url;
+    setTimeout(() => { window.location.href = 'https://www.tiktok.com/'; }, 1500);
+    markStepDone('wfStep5');
+  }, 800);
+}
+
+function renderChecklists() {
+  ['A','B','C'].forEach(grp => {
+    const list = grp === 'A' ? CHECKLIST_A : grp === 'B' ? CHECKLIST_B : CHECKLIST_C;
+    const container = document.getElementById('checklist' + grp);
+    container.innerHTML = list.map(item => `
+      <div class="check-item ${state.checklistState[item.id] ? 'done' : ''}" data-id="${item.id}">
+        <div class="check-box">${state.checklistState[item.id] ? '✓' : ''}</div>
+        <div class="check-content">
+          <div class="check-title">${escapeHTML(item.title)}</div>
+          <div class="check-desc">${escapeHTML(item.desc)}</div>
+        </div>
+      </div>
+    `).join('');
+    container.querySelectorAll('.check-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const id = el.dataset.id;
+        state.checklistState[id] = !state.checklistState[id];
+        el.classList.toggle('done');
+        el.querySelector('.check-box').textContent = state.checklistState[id] ? '✓' : '';
+        saveState();
+      });
+    });
+  });
+}
+
+function saveState() {
+  try { localStorage.setItem('mirco_studio_state', JSON.stringify(state)); } catch(e){}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('mirco_studio_state');
+    if (saved) {
+      const s = JSON.parse(saved);
+      Object.assign(state, s);
+      document.getElementById('theme').value = state.theme || '';
+      if (state.characterDesc) document.getElementById('characterDesc').value = state.characterDesc;
+      document.getElementById('tempo').value = state.tempo;
+      document.getElementById('duration').value = state.duration;
+      document.getElementById('followerCount').textContent = state.followers.toLocaleString();
+      const pct = Math.min((state.followers / 1000) * 100, 100);
+      document.getElementById('goalBar').style.width = pct + '%';
+      ['mood','scene','market','story'].forEach(key => {
+        document.querySelectorAll(`#${key}Chips .chip`).forEach(c => {
+          c.classList.toggle('active', c.dataset.val === state[key]);
+        });
+      });
+      if (state.result) renderResult(state.result);
+    }
+  } catch(e){}
+}
+
+function resetAll() {
+  if (!confirm('すべての履歴と設定をリセットしますか?')) return;
+  localStorage.removeItem('mirco_studio_state');
+  location.reload();
+}
+
+init();
+</script>
+
+</body>
+</html>
