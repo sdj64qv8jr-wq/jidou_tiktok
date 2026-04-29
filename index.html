@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MIRCO">
+<title>MIRCO — Editorial Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Shippori+Mincho+B1:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Editorial monochrome palette */
+  --bg:#0a0a0c;
+  --bg-elev:#111114;
+  --surface:#16161a;
+  --surface-2:#1c1c22;
+  --line:#26262e;
+  --line-soft:#1a1a20;
+  --text:#f5f5f0;
+  --text-soft:#a8a89e;
+  --mute:#5a5a55;
+  --accent:#d4af37;        /* warm gold - editorial accent */
+  --accent-2:#ff3366;       /* deep rose - rare use */
+  --accent-3:#7d8ba1;       /* steel blue - subtle */
+  --accent-soft:#d4af3712;
+  --gold:#d4af37;
+  --danger:#a83232;
+  --ok:#5a8a4f;
+  --r:4px;
+  --r-lg:8px;
+  --t:300ms cubic-bezier(.2,.8,.2,1);
+  --sb:env(safe-area-inset-bottom,0);
+  --st:env(safe-area-inset-top,0);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter','Hiragino Kaku Gothic Pro','Yu Gothic',sans-serif;
+  font-size:14px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overscroll-behavior:none;
+  font-feature-settings:'ss01','ss02','cv01';
+}
+body{min-height:100vh;padding-bottom:30px}
+::selection{background:var(--accent);color:var(--bg)}
+
+.serif{font-family:'Cormorant Garamond',serif}
+.mincho{font-family:'Shippori Mincho B1',serif}
+.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+/* ===== Header — Editorial Masthead ===== */
+.masthead{
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,10,12,.92);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line-soft);
+  padding:calc(14px + var(--st)) 18px 14px;
+}
+.masthead-row{display:flex;justify-content:space-between;align-items:flex-end;gap:14px}
+.masthead-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:500;
+  font-size:28px;
+  letter-spacing:-.02em;
+  line-height:1;
+  display:flex;align-items:baseline;gap:10px;
+}
+.masthead-title em{font-style:italic;color:var(--accent);font-weight:400}
+.masthead-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.18em;
+  color:var(--mute);
+  text-transform:uppercase;
+  text-align:right;
+}
+.masthead-line{
+  height:1px;background:var(--line);
+  margin:12px -18px 0;position:relative;
+}
+.masthead-line::after{
+  content:'';position:absolute;left:18px;top:-1px;
+  width:40px;height:3px;background:var(--accent);
+}
+
+.container{padding:24px 18px}
+
+/* ===== Issue Cover — like a magazine cover ===== */
+.cover{
+  margin-bottom:24px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:20px;
+}
+.cover-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.22em;
+  color:var(--mute);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.cover-title{
+  font-family:'Cormorant Garamond',serif;
+  font-weight:400;
+  font-size:32px;
+  line-height:1.05;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.cover-title em{font-style:italic;color:var(--accent)}
+.cover-stats{
+  display:flex;gap:18px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-soft);
+  letter-spacing:.05em;
+}
+.cover-stats .stat{display:flex;flex-direction:column;gap:2px}
+.cover-stats .stat-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:20px;
+  color:var(--text);
+  font-weight:600;
+  font-style:italic;
+}
+.cover-stats .stat-label{font-size:8px;letter-spacing:.18em;color:var(--mute);text-transform:uppercase}
+
+/* ===== Tabs — minimal underline ===== */
+.tabs{
+  display:flex;gap:24px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:24px;
+  padding-bottom:0;
+}
+.tab{
+  background:transparent;border:none;
+  color:var(--text-soft);
+  padding:10px 0;
+  cursor:pointer;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.18em;
+  font-weight:500;
+  text-transform:uppercase;
+  position:relative;
+  transition:color var(--t);
+}
+.tab::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;
+  height:1px;background:var(--accent);
+  transform:scaleX(0);
+  transition:transform var(--t);
+}
+.tab.active{color:var(--text)}
+.tab.active::after{transform:scaleX(1)}
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .4s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Section ===== */
+.section{margin-bottom:28px}
+.section-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line-soft);
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:18px;
+  font-weight:500;
+  color:var(--text);
+}
+.section-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:var(--mute);
+  letter-spacing:.18em;
+}
+
+/* ===== Forge Input — Editorial form ===== */
+.forge-form{
+  background:var(--bg-elev);
+  border:1px solid var(--line);
+  padding:20px;
+  border-radius:var(--r-lg);
+}
+.form-label{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  letter-spacing:.15em;
+  color:var(--mute);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.form-label .pill-btn{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--text-soft);
+  padding:4px 10px;
+  border-radius:100px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.1em;
+  font-weight:500;
+  cursor:pointer;
+  transition:all var(--t);
+}
+.form-label .pill-btn:active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+
+.textarea{
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:14px 16px;
+  border-radius:var(--r);
+  font-family:'Shippori Mincho B1',serif;
+  font-size:16px;
+  line-height:2;
+  -webkit-appearance:none;
+  resize:vertical;
+  min-height:160px;
+  transition:all var(--t);
+}
+.textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.textarea::placeholder{color:var(--mute);font-style:italic}
+
+/* ===== Status ===== */
+.status-row{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  color:var(--text-soft);
+  margin-top:14px;
+  letter-spacing:.04em;
+}
+.s-dot{width:5px;height:5px;border-radius:50%;background:var(--mute);flex-shrink:0;transition:all var(--t)}
+.s-dot.working{background:var(--accent);animation:pulse 1.4s ease-in-out infinite;box-shadow:0 0 8px var(--accent)}
+.s-dot.done{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.s-dot.error{background:var(--danger)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.progress-rail{height:1px;background:var(--surface-2);margin-top:6px;overflow:hidden;border-radius:1px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%;transition:width .4s}
+
+/* ===== Primary CTA ===== */
+.cta{
+  width:100%;
+  background:var(--text);
+  color:var(--bg);
+  border:none;
+  padding:18px;
+  border-radius:var(--r);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:18px;
+  cursor:pointer;
+  letter-spacing:.02em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:14px;
+  transition:all var(--t);
+  letter-spacing:0;
+}
+.cta:hover:not(:disabled){background:var(--accent);transform:translateY(-1px)}
+.cta:disabled{opacity:.5;cursor:wait}
+
+/* ===== Spinner ===== */
+.spin{
+  width:13px;height:13px;
+  border:1.5px solid #0003;
+  border-top-color:currentColor;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+  display:inline-block;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== Track Cards — Editorial Article Style ===== */
+.track-list{
+  display:flex;flex-direction:column;gap:0;
+  margin-top:8px;
+}
+.track-card{
+  position:relative;
+  padding:20px 0;
+  border-bottom:1px solid var(--line-soft);
+  cursor:pointer;
+  transition:all var(--t);
+}
+.track-card:hover{padding-left:6px}
+.track-card.expanded{
+  background:linear-gradient(180deg,transparent,rgba(212,175,55,.02));
+  padding:24px 18px;
+  margin:0 -18px;
+  border-bottom:1px solid var(--line);
+  border-top:1px solid var(--line);
+  cursor:default;
+}
+.track-head{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:14px;
+  align-items:start;
+}
+.track-thumb{
+  width:64px;height:64px;
+  background:var(--surface);
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  flex-shrink:0;
+}
+.track-thumb img{width:100%;height:100%;object-fit:cover}
+.track-thumb-empty{
+  display:flex;align-items:center;justify-content:center;
+  height:100%;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:24px;
+  color:var(--mute);
+}
+.track-meta{flex:1;min-width:0}
+.track-meta-top{
+  display:flex;gap:10px;align-items:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:var(--mute);
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.track-num{color:var(--accent);font-weight:600}
+.track-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:22px;
+  line-height:1.15;
+  color:var(--text);
+  font-weight:500;
+  margin-bottom:4px;
+  letter-spacing:-.01em;
+}
+.track-theme{
+  font-size:12px;
+  color:var(--text-soft);
+  font-family:'Shippori Mincho B1',serif;
+  line-height:1.4;
+}
+.track-status{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  font-weight:500;
+  white-space:nowrap;
+  flex-shrink:0;
+  align-self:start;
+  padding-top:8px;
+}
+.track-status.pending{color:var(--mute)}
+.track-status.generating{color:var(--accent)}
+.track-status.ready{color:var(--ok)}
+.track-status.posted{color:var(--accent-3)}
+.track-status.failed{color:var(--danger)}
+
+/* ===== Track Detail (when expanded) ===== */
+.track-detail{
+  display:none;
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px dashed var(--line);
+}
+.track-card.expanded .track-detail{display:block}
+
+.detail-block{margin-bottom:24px}
+.detail-block-h{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:10px;
+}
+.detail-block-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.2em;
+  color:var(--mute);
+  text-transform:uppercase;
+}
+
+/* Editorial pull-quote style for concept */
+.pull-quote{
+  text-align:center;
+  padding:24px 12px;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  margin:8px 0;
+}
+.pull-quote-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:36px;
+  color:var(--accent);
+  line-height:1;
+  margin-bottom:6px;
+}
+.pull-quote-text{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:24px;
+  font-weight:500;
+  color:var(--text);
+  line-height:1.3;
+  margin-bottom:8px;
+  letter-spacing:-.01em;
+}
+.pull-quote-desc{
+  font-size:11px;
+  color:var(--text-soft);
+  font-family:'Shippori Mincho B1',serif;
+  font-style:italic;
+}
+
+/* Lyrics — like poetry layout */
+.lyrics-block{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:15px;
+  line-height:2.1;
+  color:var(--text);
+  white-space:pre-wrap;
+  padding:14px 18px;
+  background:var(--surface);
+  border-left:2px solid var(--accent);
+  border-radius:0 var(--r) var(--r) 0;
+  letter-spacing:.02em;
+}
+
+/* Mono code-like blocks */
+.mono-block{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  line-height:1.7;
+  color:var(--accent-3);
+  background:#000;
+  padding:14px;
+  border-radius:var(--r);
+  white-space:pre-wrap;
+  word-break:break-word;
+  max-height:180px;
+  overflow-y:auto;
+  border:1px solid var(--line);
+}
+
+/* Image grid — magazine layout */
+.img-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px;
+  margin-top:8px;
+}
+.img-tile{
+  aspect-ratio:9/16;
+  background:var(--surface);
+  border:1px solid var(--line);
+  overflow:hidden;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r);
+}
+.img-tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.img-tile:hover img{transform:scale(1.05)}
+.img-tile-num{
+  position:absolute;top:8px;left:8px;
+  background:rgba(0,0,0,.7);
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  padding:3px 6px;
+  border-radius:2px;
+  font-weight:500;
+  letter-spacing:.1em;
+  backdrop-filter:blur(4px);
+}
+.img-tile.loading{color:var(--mute);font-family:'JetBrains Mono',monospace;font-size:9px}
+.img-tile.failed{
+  color:var(--danger);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  cursor:pointer;
+  flex-direction:column;
+  text-align:center;
+  letter-spacing:.1em;
+}
+
+/* Caption + tags */
+.caption-block{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:14px;
+  line-height:1.85;
+  color:var(--text);
+  padding:14px 16px;
+  background:var(--surface);
+  border-radius:var(--r);
+  white-space:pre-wrap;
+}
+.tags-block{
+  font-size:11px;
+  color:var(--accent);
+  font-family:'Inter',sans-serif;
+  word-break:break-word;
+  line-height:1.7;
+  padding:10px 14px;
+  background:var(--surface);
+  border-radius:var(--r);
+  margin-top:6px;
+  font-weight:500;
+}
+
+/* ===== Action buttons — minimal icon row ===== */
+.action-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  margin:18px 0;
+}
+.action-btn{
+  padding:14px 8px;
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  font-weight:500;
+  letter-spacing:.15em;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  transition:all var(--t);
+  text-transform:uppercase;
+}
+.action-btn:hover{background:var(--text);color:var(--bg);border-color:var(--text)}
+.action-btn .ai{font-size:18px;line-height:1}
+
+/* ===== Video section ===== */
+.video-section{
+  margin-top:18px;
+  padding:16px;
+  background:var(--surface);
+  border:1px dashed var(--line);
+  border-radius:var(--r);
+}
+.video-section input[type=file]{
+  width:100%;
+  padding:10px 12px;
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;
+  margin-top:8px;
+  cursor:pointer;
+}
+.video-section input[type=file]::-webkit-file-upload-button{
+  background:var(--text);
+  color:var(--bg);
+  border:none;
+  padding:6px 12px;
+  border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  font-weight:600;
+  cursor:pointer;
+  margin-right:10px;
+}
+.gen-vid-btn{
+  width:100%;
+  background:var(--accent);
+  color:var(--bg);
+  border:none;
+  padding:14px;
+  border-radius:var(--r);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:10px;
+  transition:all var(--t);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.gen-vid-btn:hover:not(:disabled){background:var(--text)}
+.gen-vid-btn:disabled{opacity:.5;cursor:wait}
+
+/* ===== Bottom utility row ===== */
+.utility-row{
+  display:flex;gap:8px;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--line-soft);
+}
+.utility-btn{
+  flex:1;
+  padding:9px;
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--text-soft);
+  border-radius:var(--r);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  letter-spacing:.12em;
+  font-weight:500;
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:all var(--t);
+}
+.utility-btn:hover{border-color:var(--text);color:var(--text)}
+.utility-btn.danger{color:var(--danger);border-color:var(--danger)}
+.utility-btn.danger:hover{background:var(--danger);color:var(--text)}
+
+/* ===== Empty state ===== */
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  border:1px dashed var(--line);
+  border-radius:var(--r-lg);
+  color:var(--text-soft);
+}
+.empty-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:48px;
+  color:var(--accent);
+  margin-bottom:12px;
+  font-weight:300;
+}
+.empty-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:20px;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.empty-sub{font-size:12px;color:var(--text-soft);font-family:'Shippori Mincho B1',serif}
+
+/* ===== Strategy/Schedule editorial ===== */
+.essay-block{
+  padding:14px 16px;
+  background:var(--bg-elev);
+  border-left:2px solid var(--accent);
+  border-radius:0 var(--r) var(--r) 0;
+  margin-bottom:10px;
+}
+.essay-block.priority{border-left-color:var(--accent-2)}
+.essay-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;
+  color:var(--accent);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:4px;
+  font-weight:600;
+}
+.essay-block.priority .essay-num{color:var(--accent-2)}
+.essay-title{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:15px;
+  margin-bottom:4px;
+  color:var(--text);
+}
+.essay-desc{font-size:12px;color:var(--text-soft);line-height:1.6;font-family:'Shippori Mincho B1',serif}
+
+.schedule-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:1px;
+  background:var(--line);
+  border:1px solid var(--line);
+  border-radius:var(--r);
+  overflow:hidden;
+  margin-top:10px;
+}
+.schedule-day{
+  text-align:center;
+  padding:10px 4px;
+  background:var(--bg-elev);
+}
+.schedule-day .day-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  color:var(--mute);
+  margin-bottom:4px;
+  letter-spacing:.15em;
+}
+.schedule-day .day-time{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:14px;
+  color:var(--text-soft);
+}
+.schedule-day.peak{background:var(--surface)}
+.schedule-day.peak .day-time{color:var(--accent);font-weight:600}
+
+footer.foot{
+  text-align:center;
+  padding:30px 14px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;
+  color:var(--mute);
+  letter-spacing:.25em;
+  text-transform:uppercase;
+}
+footer.foot .em{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  text-transform:none;
+  letter-spacing:.04em;
+  color:var(--accent);
+  font-size:11px;
+}
+
+/* ===== Modal/Sheet for editing ===== */
+.sheet{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;
+  padding:14px;
+  overflow-y:auto;
+}
+.sheet-inner{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:24px;
+  margin:auto;
+  width:100%;
+  max-width:600px;
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-row">
+    <div class="masthead-title"><em>Mirco</em> Studio</div>
+    <div class="masthead-meta">
+      VOL. 01<br>
+      <span style="color:var(--text-soft);">EST. 2026</span>
+    </div>
+  </div>
+  <div class="masthead-line"></div>
+</header>
+
+<div class="container">
+
+  <!-- ===== Cover ===== -->
+  <div class="cover">
+    <div class="cover-meta">@mirco9015 — Story Music Series</div>
+    <div class="cover-title">柊ミナ × 天羽ルイ<br><em>声を失った少女と、消えていく耳の少年。</em></div>
+    <div class="cover-stats">
+      <div class="stat">
+        <div class="stat-num" id="statTracks">0</div>
+        <div class="stat-label">Tracks</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statPosted">0</div>
+        <div class="stat-label">Posted</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">1K</div>
+        <div class="stat-label">Followers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">✓</div>
+        <div class="stat-label">Monetized</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Tabs ===== -->
+  <div class="tabs">
+    <button class="tab active" data-tab="forge">Forge</button>
+    <button class="tab" data-tab="tracks">Catalog</button>
+    <button class="tab" data-tab="strategy">Strategy</button>
+    <button class="tab" data-tab="schedule">Schedule</button>
+  </div>
+
+  <!-- ============ FORGE TAB ============ -->
+  <div class="tab-content active" data-content="forge">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">New Issue</div>
+        <div class="section-num">§ 01</div>
+      </div>
+      <div class="forge-form">
+        <div class="form-label">
+          <span>Themes — One per line</span>
+          <button class="pill-btn" onclick="suggestThemes()">Random</button>
+        </div>
+        <textarea class="textarea" id="batchThemes" placeholder="届かない手紙&#10;4年目の春&#10;指先の旋律&#10;消えていく音"></textarea>
+        <div class="status-row" id="statusBar">
+          <div class="s-dot" id="statusDot"></div>
+          <div style="flex:1;">
+            <div id="statusText">Ready</div>
+            <div class="progress-rail" id="progressWrap" style="display:none;">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+        </div>
+        <button class="cta" id="batchBtn" onclick="batchForge()">
+          <span id="batchText">Compose Issue</span>
+        </button>
+      </div>
+    </div>
+    
+    <div class="section" id="recentSection" style="display:none;">
+      <div class="section-head">
+        <div class="section-title">In This Issue</div>
+        <div class="section-num">§ 02</div>
+      </div>
+      <div id="recentList" class="track-list"></div>
+    </div>
+  </div>
+
+  <!-- ============ CATALOG TAB ============ -->
+  <div class="tab-content" data-content="tracks">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Complete Catalog</div>
+        <div class="section-num">§ ALL</div>
+      </div>
+      <div id="trackList" class="track-list"></div>
+      <div id="emptyState" class="empty" style="display:none;">
+        <div class="empty-mark">∅</div>
+        <div class="empty-title">No tracks yet</div>
+        <div class="empty-sub">Compose your first issue from the Forge tab.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STRATEGY TAB ============ -->
+  <div class="tab-content" data-content="strategy">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Now Playing</div>
+        <div class="section-num">§ A</div>
+      </div>
+      <div class="essay-block priority">
+        <div class="essay-num">PRIORITY 01</div>
+        <div class="essay-title">Apply for Creator Rewards Program</div>
+        <div class="essay-desc">TikTok 設定→クリエイターツール→Creator Rewards Program。1000人達成済 — 申請可能。月数千〜数万円の収益開始。</div>
+      </div>
+      <div class="essay-block priority">
+        <div class="essay-num">PRIORITY 02</div>
+        <div class="essay-title">Daily 60s+ video posts</div>
+        <div class="essay-desc">FORGE→Suno→動画化を毎日実行。BATCH一括生成で週6本まとめて作成。</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">03</div>
+        <div class="essay-title">DistroKid または TuneCore Japan登録</div>
+        <div class="essay-desc">年$23-$45で全プラットフォーム配信。AIラベル抑制を回避してストリーミング印税獲得。</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">04</div>
+        <div class="essay-title">Cross-post to Reels & Shorts</div>
+        <div class="essay-desc">同じ動画を3プラットフォームに展開。報酬源が3倍に。Instagram Reelsが現状RPM最高。</div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Long-term Vision</div>
+        <div class="section-num">§ B</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">PHASE 02 — 3,000 followers</div>
+        <div class="essay-title">TikTok LIVE / Membership</div>
+        <div class="essay-desc">ストーリー解説LIVE+月額500円メンバーで安定収益基盤を構築。</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">PHASE 03 — 10,000 followers</div>
+        <div class="essay-title">Merchandise / Music Licensing</div>
+        <div class="essay-desc">BOOTH+Bandcamp+企業向け楽曲提供。シリーズの世界観を多メディア展開。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCHEDULE TAB ============ -->
+  <div class="tab-content" data-content="schedule">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Optimal Posting Times</div>
+        <div class="section-num">§ A</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-desc" style="font-style:italic;color:var(--text);">物語系バラードの黄金時間 — 夜22-24時(JST) = 北米午前帯のWゴールデン。</div>
+      </div>
+      <div class="schedule-grid">
+        <div class="schedule-day"><div class="day-label">MON</div><div class="day-time">21:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">TUE</div><div class="day-time">22:30</div></div>
+        <div class="schedule-day"><div class="day-label">WED</div><div class="day-time">21:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">THU</div><div class="day-time">22:30</div></div>
+        <div class="schedule-day peak"><div class="day-label">FRI</div><div class="day-time">23:00</div></div>
+        <div class="schedule-day peak"><div class="day-label">SAT</div><div class="day-time">23:00</div></div>
+        <div class="schedule-day"><div class="day-label">SUN</div><div class="day-time">21:00</div></div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title">Weekly Pattern</div>
+        <div class="section-num">§ B</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">MON 21:00</div>
+        <div class="essay-title">New issue · Main edition</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">TUE 22:30</div>
+        <div class="essay-title">Same song · Different scene</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">THU 22:30</div>
+        <div class="essay-title">Lyric highlight version</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">FRI 23:00</div>
+        <div class="essay-title">Past track remix</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">SAT 23:00</div>
+        <div class="essay-title">Behind-the-scenes</div>
+      </div>
+      <div class="essay-block">
+        <div class="essay-num">SUN 21:00</div>
+        <div class="essay-title">Throwback popular track</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="foot">
+  <div class="em">Mirco Studio</div>
+  Editorial Edition · v6 · @mirco9015<br>
+  <button class="utility-btn" style="margin-top:14px;max-width:200px;" onclick="exportData()">Export All Data (JSON)</button>
+  &nbsp;
+  <button class="utility-btn danger" style="margin-top:14px;max-width:120px;" onclick="resetAll()">Reset</button>
+</footer>
+
+<script>
+// ================ DATA ================
+
+const STORY_CONTEXT = `中学時代に天才的歌声を持つも、13歳の夜の事故で母を意識不明にしてしまい、その日から声を失った17歳の少女・柊ミナ(手話とスマホで生きる)と、音痴なのに路上で歌い続ける同い年のギタリスト・天羽ルイ(実は耳がゆっくり聞こえなくなっている)の物語。声を失った少女と耳を失う少年が、それでも音楽を始め、4年間眠り続ける母の病室に歌を届けようとする。喪失・贖罪・届かないかもしれない歌・二人の欠けた音楽がテーマ。`;
+
+const CHARACTER_VISUALS = {
+  both: `breathtaking masterpiece anime illustration of two 17 year old Japanese teenagers, Mina (girl with long black hair, gentle sad eyes, signing with her hands or holding phone) and Rui (boy with messy hair, holding acoustic guitar, intense focused eyes), profound emotional connection, melancholic intimate atmosphere`,
+  mina: `breathtaking masterpiece anime illustration of Mina, 17 year old Japanese high school girl with long black hair, gentle melancholic eyes, oversized cardigan, holding phone or signing, expression of suppressed emotion, ethereal fragile beauty`,
+  rui: `breathtaking masterpiece anime illustration of Rui, 17 year old Japanese boy guitarist with messy dark hair, intense focused eyes straining to hear, worn casual jacket, holding acoustic guitar, headphones around neck, quiet determination`,
+  hospital: `breathtaking masterpiece anime illustration of hospital room at night, Mina's mother sleeping in hospital bed, soft moonlight through blinds, Mina sitting beside bed signing, fragile painful intimate scene`,
+};
+
+const SCENE_PROMPTS = {
+  street: 'on quiet Japanese suburban street at night, flickering streetlights, vending machine glow, wet pavement reflections, melancholic atmosphere, autumn leaves',
+  rain: 'rain-soaked street at night, heavy rainfall, neon reflections on wet asphalt, deeply emotional, cinematic anamorphic lens flares',
+  hospital: 'in dimly lit hospital room at night, soft glowing medical equipment, moonlight through blinds, intimate fragile atmosphere',
+  classroom: 'in empty Japanese high school classroom at sunset, golden afternoon light through windows, dust particles in beams, lonely nostalgic',
+  rooftop: 'on Japanese high school rooftop at sunset, chain link fence, vast pink orange sky, distant city skyline, golden hour',
+  station: 'on empty train station platform at midnight, fluorescent lights, lonely silent atmosphere',
+  riverbank: 'on grass riverbank at sunset, cherry blossoms or autumn leaves, peaceful flowing water, intimate quiet',
+  bedroom: 'in cluttered teenage girl bedroom at night, single warm desk lamp, scattered notebooks, intimate personal space',
+  snow: 'on snowy Japanese street at night, silent falling snowflakes, breath visible, deeply quiet melancholic',
+  bench: 'on park bench at night under streetlight, intimate quiet moment, autumn leaves',
+};
+
+const STYLE_TAIL = ', best quality, masterpiece, ultra-detailed, 8k, professional anime illustration in style of Makoto Shinkai (Your Name) and CoMix Wave Films, painterly digital art, cinematic lighting, melancholic color palette, atmospheric depth, perfect anatomy, detailed eyes, 35mm film grain';
+
+const COMPOSITIONS = [
+  'ultra-wide cinematic establishing shot, full body, anamorphic lens flare, dramatic environment, golden hour',
+  'medium shot 3/4 angle, soft focus background, intimate atmosphere, rim lighting',
+  'extreme close-up portrait, hands or face detail, emotional intimate framing, shallow depth',
+  'wide cinematic shot, atmospheric environment dominates, lonely Makoto Shinkai style',
+];
+
+const THEME_BANK = [
+  '届かない手紙','4年目の春','指先の旋律','消えていく音','事故の前の夜','もしもの世界線',
+  '病室の月明かり','路上で見つけた音','雨の交差点','いつか目覚める日','夜明けまで',
+  '名前のない感情','ギターの傷','聞こえない約束','夢の中で歌う','沈黙のメロディ',
+  '4年分の独り言','声のない歌','記憶の海','光の囁き','名前を呼べない夜','二人の半分',
+];
+
+const SCENES_KEYS = ['street','rain','hospital','classroom','rooftop','station','riverbank','bedroom','snow','bench'];
+const CHAR_KEYS = ['both','mina','rui','hospital'];
+
+// ================ STATE ================
+
+const state = {
+  tracks: [],
+  expandedId: null,
+  recentBatchIds: [],
+};
+
+const audioFiles = {};
+const videoBlobs = {};
+let particles = [];
+
+// ================ INIT ================
+
+function init() {
+  bindTabs();
+  loadState();
+  render();
+  updateStats();
+}
+
+function bindTabs() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`[data-content="${tab.dataset.tab}"]`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+}
+
+function setStatus(text, mode, pct) {
+  document.getElementById('statusText').textContent = text;
+  document.getElementById('statusDot').className = 's-dot ' + (mode || '');
+  if (typeof pct === 'number') {
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('progressFill').style.width = pct + '%';
+  } else {
+    document.getElementById('progressWrap').style.display = 'none';
+  }
+}
+
+function updateStats() {
+  document.getElementById('statTracks').textContent = state.tracks.length;
+  document.getElementById('statPosted').textContent = state.tracks.filter(t => t.posted).length;
+}
+
+function suggestThemes() {
+  const shuffled = [...THEME_BANK].sort(() => Math.random() - 0.5).slice(0, 6);
+  document.getElementById('batchThemes').value = shuffled.join('\n');
+}
+
+// ================ JSON Parser ================
+
+function extractJSON(text) {
+  if (!text || typeof text !== 'string') throw new Error('空のレスポンス');
+  let cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+  try { return JSON.parse(cleaned); } catch(e){}
+  const start = cleaned.indexOf('{');
+  if (start === -1) throw new Error('JSON not found');
+  for (let i = cleaned.length - 1; i > start; i--) {
+    if (cleaned[i] !== '}') continue;
+    const cand = cleaned.substring(start, i + 1);
+    try { return JSON.parse(cand); } catch(e){}
+    try { return JSON.parse(cand.replace(/,(\s*[}\]])/g, '$1')); } catch(e){}
+  }
+  let attempt = cleaned.substring(start);
+  let openBraces=0, openBrackets=0, inString=false, escape=false;
+  for (let i=0; i<attempt.length; i++) {
+    const ch = attempt[i];
+    if (escape) { escape = false; continue; }
+    if (ch === '\\') { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{') openBraces++;
+    else if (ch === '}') openBraces--;
+    else if (ch === '[') openBrackets++;
+    else if (ch === ']') openBrackets--;
+  }
+  if (inString) {
+    const lastQuote = attempt.lastIndexOf('"');
+    if (lastQuote > 0) attempt = attempt.substring(0, lastQuote);
+  }
+  attempt = attempt.replace(/,\s*$/, '').replace(/:\s*$/, '');
+  for (let i=0; i<openBrackets; i++) attempt += ']';
+  for (let i=0; i<openBraces; i++) attempt += '}';
+  try { return JSON.parse(attempt); } catch(e){}
+  try { return JSON.parse(attempt.replace(/,(\s*[}\]])/g, '$1')); } catch(e){}
+  throw new Error('JSON Parse error');
+}
+
+// ================ TEXT API ================
+
+async function callTextAPI(prompt, timeoutMs = 60000) {
+  const tryFetch = async (url, options) => {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...options, signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const ct = res.headers.get('content-type') || '';
+      if (ct.includes('application/json')) {
+        const data = await res.json();
+        return data.choices?.[0]?.message?.content || data.content || '';
+      }
+      return await res.text();
+    } catch (e) { clearTimeout(timer); throw e; }
+  };
+  try {
+    return await tryFetch('https://text.pollinations.ai/openai', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{role:'user',content:prompt}], model:'openai', seed:Math.floor(Math.random()*1e6) }),
+    });
+  } catch(e){}
+  try {
+    const url = `https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai&seed=${Math.floor(Math.random()*1e6)}`;
+    return await tryFetch(url, { method: 'GET' });
+  } catch(e){}
+  try {
+    return await tryFetch('https://text.pollinations.ai/openai', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{role:'user',content:prompt}], model:'mistral' }),
+    });
+  } catch(e){}
+  throw new Error('API失敗');
+}
+
+// ================ GENERATE ================
+
+async function generateText(theme, scene, character) {
+  const prompt = `あなたはZ世代TikTokバイラルコピーライターと現代詩人を兼ねた天才。物語性のある楽曲をシリーズ化するクリエイター向け。
+
+【世界観コア】
+${STORY_CONTEXT}
+
+【今回作る楽曲】
+- テーマ: ${theme}
+- 舞台: ${scene}
+- 登場人物: ${character === 'mina' ? '柊ミナ単独' : character === 'rui' ? '天羽ルイ単独' : character === 'hospital' ? '母とミナ' : 'ミナとルイ'}
+- 尺: 60秒(Creator Rewards対象)
+
+JSONのみ返答(前置き禁止):
+{"concept":"20文字以内・詩的タイトル","conceptDesc":"50文字説明","lyrics":"日本語60秒分の歌詞・改行区切り・8-12行・Aメロ→Bメロ→サビ→2番→ラスト構成・物語の起承転結","caption":"超独創的TikTokキャプション(下記)","hashtags":"バイラル特化15-20個(下記)","spotify":{"title":"日本語タイトル","titleEn":"英語表記","genre":"J-Pop","subGenre":"Ballad","mood":"melancholic emotional","description":"100文字説明"}}
+
+🔥 歌詞ルール:
+- 8-12行構成・最初は静かに始まりサビで爆発・ラストで余韻
+- "声"・"音"・"届く"・"指先"・"沈黙"・"記憶"・"光"・"鼓動"・"手話"の語彙活用
+- 一行ごとに情景・感情・時間が動く・繰返しに頼らない
+- 聴き終わって「もう一度」と思わせる・続きを匂わせる終わり方
+
+🔥 キャプションルール:
+- 普通の言葉禁止("夜中に聴いて"等NG)
+- 物語の余韻を残す詩的一文から開始
+- 例: "彼女の声は、まだ夜の底で眠ってる"・"届かない歌が、一番きれいだった"
+- 比喩多用(指先/沈黙/光/鼓動/夢/夜/雨/手話)
+- 絵文字1-2個厳選(🌙🥀🩹🤍🌌💭🕯️)
+- 3-4行・改行で詩のリズム
+- 物語的余韻で終わる
+
+🔥 ハッシュタグルール:
+- #エモい #切ない #物語系 #ストーリー楽曲 #手話 #ボカロ系 #YOASOBI系 #米津玄師系 #バラード #泣ける #感動 #anime #emoanime #emomusic #aesthetic #lofi #moodyvibes #fyp #foryoupage #shortmovie #ナラティブ
+- 数字タグ(#track03 等)で連載感
+- 15-20個・絵文字無し・半角スペース区切り
+- 海外向け英語タグ8個以上必須`;
+
+  const text = await callTextAPI(prompt, 60000);
+  const parsed = extractJSON(text);
+  if (!parsed.lyrics) throw new Error('歌詞生成失敗');
+  parsed.sunoFormat = `[Verse]\n${parsed.lyrics}\n\n[Style: 70-85 BPM slow ballad, emotional Japanese, female anime vocal, soft strings, atmospheric]`;
+  return parsed;
+}
+
+function buildVisualPrompts(scene, character) {
+  const sceneDesc = SCENE_PROMPTS[scene] || SCENE_PROMPTS.street;
+  const charVisual = CHARACTER_VISUALS[character] || CHARACTER_VISUALS.both;
+  return COMPOSITIONS.map((comp, i) => ({
+    label: ['Open','Verse','Chorus','Outro'][i],
+    prompt: `${charVisual}, ${sceneDesc}, ${comp}${STYLE_TAIL}`,
+  }));
+}
+
+async function generateOneImage(prompt, retries = 2) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const seed = Math.floor(Math.random() * 1e6);
+      const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1080&height=1920&seed=${seed}&nologo=true&model=flux&enhance=true`;
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        const timer = setTimeout(() => reject(new Error('timeout')), 60000);
+        img.onload = () => { clearTimeout(timer); resolve(); };
+        img.onerror = () => { clearTimeout(timer); reject(new Error('load failed')); };
+        img.src = url;
+      });
+      return url;
+    } catch (e) {
+      if (attempt < retries) await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+  return null;
+}
+
+// ================ BATCH FORGE ================
+
+async function batchForge() {
+  const themes = document.getElementById('batchThemes').value
+    .split('\n').map(t => t.trim()).filter(t => t);
+  if (themes.length === 0) { alert('テーマを1行ずつ入力してください'); return; }
+  if (themes.length > 10) { alert('最大10曲まで'); return; }
+  
+  const btn = document.getElementById('batchBtn');
+  btn.disabled = true;
+  document.getElementById('batchText').innerHTML = '<span class="spin"></span> Composing...';
+  
+  const newTracks = themes.map(theme => ({
+    id: 'tr_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    theme,
+    status: 'pending',
+    scene: SCENES_KEYS[Math.floor(Math.random() * SCENES_KEYS.length)],
+    character: CHAR_KEYS[Math.floor(Math.random() * CHAR_KEYS.length)],
+    result: null,
+    images: [],
+    posted: false,
+    createdAt: new Date().toISOString(),
+  }));
+  state.tracks = [...newTracks, ...state.tracks];
+  state.recentBatchIds = newTracks.map(t => t.id);
+  saveState();
+  render();
+  
+  let success = 0;
+  const totalSteps = newTracks.length * 5;
+  let stepDone = 0;
+  
+  for (let i = 0; i < newTracks.length; i++) {
+    const tr = newTracks[i];
+    tr.status = 'generating';
+    render();
+    
+    let textOK = false;
+    for (let attempt = 0; attempt < 3 && !textOK; attempt++) {
+      try {
+        setStatus(`[${i+1}/${newTracks.length}] ${tr.theme} — text (${attempt+1})`, 'working', Math.round(stepDone/totalSteps*100));
+        tr.result = await generateText(tr.theme, tr.scene, tr.character);
+        textOK = true;
+      } catch (e) {
+        if (attempt < 2) await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+    
+    if (!textOK) {
+      tr.status = 'failed';
+      stepDone += 5;
+      saveState();
+      render();
+      continue;
+    }
+    
+    stepDone += 1;
+    
+    const prompts = buildVisualPrompts(tr.scene, tr.character);
+    tr.images = [];
+    for (let j = 0; j < prompts.length; j++) {
+      setStatus(`[${i+1}/${newTracks.length}] ${tr.theme} — image ${j+1}/4`, 'working', Math.round(stepDone/totalSteps*100));
+      const url = await generateOneImage(prompts[j].prompt);
+      tr.images.push(url);
+      stepDone += 1;
+      render();
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    
+    tr.status = 'ready';
+    success++;
+    saveState();
+    render();
+    updateStats();
+  }
+  
+  setStatus(`Issue published — ${success}/${newTracks.length} tracks ready`, 'done');
+  setTimeout(() => setStatus('Ready', null), 3000);
+  btn.disabled = false;
+  document.getElementById('batchText').textContent = 'Compose Issue';
+  document.getElementById('batchThemes').value = '';
+}
+
+// ================ RENDER ================
+
+function render() {
+  // Recent (forge tab)
+  const recentList = document.getElementById('recentList');
+  const recentSection = document.getElementById('recentSection');
+  const recentTracks = state.tracks.filter(t => state.recentBatchIds.includes(t.id));
+  if (recentTracks.length > 0) {
+    recentSection.style.display = 'block';
+    recentList.innerHTML = recentTracks.map((tr, idx) => renderTrackCard(tr, state.tracks.indexOf(tr))).join('');
+  } else {
+    recentSection.style.display = 'none';
+  }
+  
+  // Catalog tab
+  const list = document.getElementById('trackList');
+  const empty = document.getElementById('emptyState');
+  if (state.tracks.length === 0) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  list.innerHTML = state.tracks.map((tr, idx) => renderTrackCard(tr, idx)).join('');
+  
+  updateStats();
+}
+
+function renderTrackCard(tr, idx) {
+  const isExpanded = state.expandedId === tr.id;
+  const trackNum = String(state.tracks.length - idx).padStart(3, '0');
+  const statusLabels = {
+    pending: 'Queued',
+    generating: 'Composing',
+    ready: '— Ready —',
+    failed: 'Failed',
+  };
+  const statusLabel = tr.posted ? '— Published' : (statusLabels[tr.status] || tr.status);
+  const statusClass = tr.posted ? 'posted' : tr.status;
+  
+  const thumbImg = tr.images.find(u => u);
+  const thumbHtml = thumbImg
+    ? `<img src="${thumbImg}" alt="" loading="lazy" crossorigin="anonymous">`
+    : `<div class="track-thumb-empty">${tr.status === 'generating' ? '⚙' : '◎'}</div>`;
+  
+  let detailHtml = '';
+  if (isExpanded && tr.result) {
+    detailHtml = `
+      <div class="track-detail">
+        
+        <div class="detail-block">
+          <div class="pull-quote">
+            <div class="pull-quote-mark">"</div>
+            <div class="pull-quote-text">${escapeHTML(tr.result.concept)}</div>
+            <div class="pull-quote-desc">${escapeHTML(tr.result.conceptDesc || '')}</div>
+          </div>
+        </div>
+        
+        <div class="detail-block">
+          <div class="detail-block-h">
+            <div class="detail-block-title">§ Lyrics</div>
+            <button class="action-btn" style="padding:4px 8px;font-size:8px;" onclick="copyData('${tr.id}','lyrics');event.stopPropagation()">Copy</button>
+          </div>
+          <div class="lyrics-block">${escapeHTML(tr.result.lyrics)}</div>
+        </div>
+        
+        <div class="detail-block">
+          <div class="detail-block-h">
+            <div class="detail-block-title">§ Suno Format</div>
+            <button class="action-btn" style="padding:4px 8px;font-size:8px;" onclick="copyData('${tr.id}','suno');event.stopPropagation()">Copy</button>
+          </div>
+          <div class="mono-block">${escapeHTML(tr.result.sunoFormat)}</div>
+        </div>
+        
+        ${tr.images && tr.images.length > 0 ? `
+        <div class="detail-block">
+          <div class="detail-block-h">
+            <div class="detail-block-title">§ Visual — ${tr.images.filter(x=>x).length}/4 frames</div>
+          </div>
+          <div class="img-grid">
+            ${tr.images.map((url, i) => url 
+              ? `<div class="img-tile"><div class="img-tile-num">${String(i+1).padStart(2,'0')}</div><img src="${url}" alt="" loading="lazy" crossorigin="anonymous"></div>`
+              : `<div class="img-tile failed" onclick="retryImage('${tr.id}',${i});event.stopPropagation();"><div>FAILED</div><div>↻ TAP</div></div>`
+            ).join('')}
+          </div>
+        </div>
+        ` : ''}
+        
+        <div class="detail-block">
+          <div class="detail-block-h">
+            <div class="detail-block-title">§ Caption</div>
+            <button class="action-btn" style="padding:4px 8px;font-size:8px;" onclick="copyData('${tr.id}','caption');event.stopPropagation()">Copy All</button>
+          </div>
+          <div class="caption-block">${escapeHTML(tr.result.caption)}</div>
+          <div class="tags-block">${escapeHTML(tr.result.hashtags)}</div>
+        </div>
+        
+        <div class="action-row">
+          <button class="action-btn" onclick="goSuno('${tr.id}');event.stopPropagation()">
+            <div class="ai">♫</div><div>Suno</div>
+          </button>
+          <button class="action-btn" onclick="saveImages('${tr.id}');event.stopPropagation()">
+            <div class="ai">⬇</div><div>Images</div>
+          </button>
+          <button class="action-btn" onclick="goTikTok('${tr.id}');event.stopPropagation()">
+            <div class="ai">↗</div><div>Post</div>
+          </button>
+        </div>
+        
+        <div class="video-section">
+          <div class="detail-block-title">§ Video — Auto Compose</div>
+          <input type="file" accept="audio/*,.mp3,.m4a,.wav" onchange="onAudioPick(event,'${tr.id}')" id="audioFile_${tr.id}">
+          <button class="gen-vid-btn" onclick="genVideo('${tr.id}');event.stopPropagation()" id="vidBtn_${tr.id}">
+            <span id="vidBtnText_${tr.id}">Compose Video</span>
+          </button>
+          <video id="vidPlayer_${tr.id}" controls playsinline style="display:none;width:100%;border-radius:4px;background:#000;margin-top:10px;"></video>
+          <button class="gen-vid-btn" id="vidDl_${tr.id}" style="display:none;background:var(--accent-3);" onclick="downloadVid('${tr.id}');event.stopPropagation()">⬇ Download Video</button>
+        </div>
+        
+        <div class="utility-row">
+          <button class="utility-btn" onclick="markPosted('${tr.id}');event.stopPropagation()">${tr.posted ? '↺ Unmark' : '✓ Mark Posted'}</button>
+          <button class="utility-btn danger" onclick="deleteTrack('${tr.id}');event.stopPropagation()">Delete</button>
+        </div>
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="track-card ${isExpanded ? 'expanded' : ''}" data-id="${tr.id}">
+      <div class="track-head" onclick="toggleTrack('${tr.id}')">
+        <div class="track-thumb">${thumbHtml}</div>
+        <div class="track-meta">
+          <div class="track-meta-top">
+            <span class="track-num">№${trackNum}</span>
+            <span>·</span>
+            <span>${tr.scene}</span>
+          </div>
+          <div class="track-title">${escapeHTML(tr.result?.concept || tr.theme)}</div>
+          <div class="track-theme">${escapeHTML(tr.theme)}</div>
+        </div>
+        <div class="track-status ${statusClass}">${statusLabel}</div>
+      </div>
+      ${detailHtml}
+    </div>
+  `;
+}
+
+function toggleTrack(id) {
+  state.expandedId = state.expandedId === id ? null : id;
+  saveState();
+  render();
+}
+
+function deleteTrack(id) {
+  if (!confirm('この曲を削除?')) return;
+  state.tracks = state.tracks.filter(t => t.id !== id);
+  state.recentBatchIds = state.recentBatchIds.filter(i => i !== id);
+  if (state.expandedId === id) state.expandedId = null;
+  saveState();
+  render();
+}
+
+function markPosted(id) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (tr) {
+    tr.posted = !tr.posted;
+    saveState();
+    render();
+  }
+}
+
+async function retryImage(id, idx) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr) return;
+  const prompts = buildVisualPrompts(tr.scene, tr.character);
+  setStatus(`Retrying image ${idx+1}...`, 'working');
+  const url = await generateOneImage(prompts[idx].prompt, 3);
+  if (url) {
+    tr.images[idx] = url;
+    saveState();
+    render();
+    setStatus('Image restored ✓', 'done');
+  } else {
+    setStatus('Retry failed', 'error');
+  }
+}
+
+// ================ COPY ================
+
+async function robustCopy(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch(e) {}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.setAttribute('readonly', '');
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch(e) { return false; }
+}
+
+async function copyData(id, type) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr || !tr.result) return;
+  const r = tr.result;
+  let text = '';
+  if (type === 'lyrics') text = r.lyrics;
+  else if (type === 'suno') text = r.sunoFormat;
+  else if (type === 'caption') text = r.caption + '\n\n' + r.hashtags;
+  
+  const ok = await robustCopy(text);
+  if (ok) setStatus(`Copied ✓`, 'done');
+  else prompt('Manual copy:', text);
+}
+
+// ================ ACTIONS ================
+
+async function goSuno(id) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr || !tr.result) return;
+  const ok = await robustCopy(tr.result.sunoFormat);
+  if (ok) setStatus('Suno format copied ✓', 'done');
+  setTimeout(() => window.open('https://suno.com/create', '_blank'), 400);
+}
+
+async function saveImages(id) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr || !tr.images) return;
+  const valid = tr.images.filter(u => u);
+  if (valid.length === 0) { alert('No images to save'); return; }
+  setStatus('Saving images...', 'working');
+  for (let i = 0; i < valid.length; i++) {
+    setStatus(`Saving ${i+1}/${valid.length}...`, 'working');
+    await saveImage(valid[i], i);
+    await new Promise(r => setTimeout(r, 400));
+  }
+  setStatus('All images saved ✓', 'done');
+}
+
+async function saveImage(url, idx) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const filename = `mirco_${Date.now()}_${String(idx+1).padStart(2,'0')}.png`;
+    const file = new File([blob], filename, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: filename }); return; } catch (e) {}
+    }
+    const dlUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = dlUrl; a.download = filename;
+    a.click();
+    URL.revokeObjectURL(dlUrl);
+  } catch (e) { console.error(e); }
+}
+
+async function goTikTok(id) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr || !tr.result) return;
+  const trackNum = String(state.tracks.length - state.tracks.indexOf(tr)).padStart(3,'0');
+  const text = `${tr.result.caption}\n\n${tr.result.hashtags}\n\n[№${trackNum}] ${tr.result.concept}`;
+  const ok = await robustCopy(text);
+  if (ok) setStatus('Post package copied ✓', 'done');
+  setTimeout(() => {
+    const ua = navigator.userAgent;
+    let url = 'https://www.tiktok.com/upload';
+    if (/iPhone|iPad|iPod/i.test(ua)) url = 'snssdk1233://upload';
+    else if (/Android/i.test(ua)) url = 'intent://upload#Intent;package=com.zhiliaoapp.musically;end';
+    window.location.href = url;
+    setTimeout(() => { window.location.href = 'https://www.tiktok.com/'; }, 1500);
+  }, 400);
+}
+
+// ================ VIDEO ================
+
+function onAudioPick(event, id) {
+  const file = event.target.files[0];
+  if (file) {
+    audioFiles[id] = file;
+    setStatus(`Audio set: ${file.name}`, 'done');
+  }
+}
+
+async function genVideo(id) {
+  const tr = state.tracks.find(t => t.id === id);
+  if (!tr) return;
+  const audioFile = audioFiles[id];
+  if (!audioFile) { alert('Upload mp3 first'); return; }
+  
+  const validImages = tr.images.filter(u => u);
+  if (validImages.length === 0) { alert('Need images first'); return; }
+  
+  const btn = document.getElementById(`vidBtn_${id}`);
+  const btnText = document.getElementById(`vidBtnText_${id}`);
+  btn.disabled = true;
+  btnText.innerHTML = '<span class="spin"></span> Composing...';
+  
+  try {
+    setStatus('Decoding audio...', 'working');
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const arrayBuffer = await audioFile.arrayBuffer();
+    
+    let audioBuffer;
+    try {
+      audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
+    } catch(e1) {
+      throw new Error('Audio decode failed. Try MP3 format.');
+    }
+    
+    setStatus('Rendering video...', 'working');
+    await renderVideo(tr, validImages, audioBuffer, audioCtx);
+    
+    btnText.textContent = '✓ Complete';
+    setStatus('Video composed ✓', 'done');
+  } catch (e) {
+    console.error(e);
+    btnText.textContent = 'Retry';
+    setStatus('Error: ' + e.message, 'error');
+    alert('Video error: ' + e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function renderVideo(tr, images, audioBuffer, audioCtx) {
+  const W = 1080, H = 1920;
+  const fps = 30;
+  const baseDur = audioBuffer.duration;
+  const duration = baseDur < 60 ? Math.min(baseDur * 2, 90) : baseDur;
+  const loopAudio = baseDur < 60;
+  
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  
+  const audioDest = audioCtx.createMediaStreamDestination();
+  const audioSource = audioCtx.createBufferSource();
+  audioSource.buffer = audioBuffer;
+  audioSource.loop = loopAudio;
+  audioSource.connect(audioDest);
+  
+  const videoStream = canvas.captureStream(fps);
+  const combinedStream = new MediaStream([
+    ...videoStream.getVideoTracks(),
+    ...audioDest.stream.getAudioTracks(),
+  ]);
+  
+  const mimeOptions = ['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  let mime = '';
+  for (const m of mimeOptions) {
+    if (MediaRecorder.isTypeSupported(m)) { mime = m; break; }
+  }
+  if (!mime) throw new Error('Browser does not support video recording');
+  
+  const chunks = [];
+  const recorder = new MediaRecorder(combinedStream, { mimeType: mime, videoBitsPerSecond: 6_000_000 });
+  recorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+  
+  const imgs = await Promise.all(images.map(url => new Promise((res) => {
+    const i = new Image();
+    i.crossOrigin = 'anonymous';
+    i.onload = () => res(i);
+    i.onerror = () => res(null);
+    i.src = url;
+  })));
+  
+  const lyricLines = (tr.result?.lyrics || '').split('\n').filter(l => l.trim());
+  
+  const stopped = new Promise(r => recorder.onstop = r);
+  recorder.start();
+  audioSource.start();
+  
+  const startTime = performance.now();
+  
+  particles = [];
+  for (let i = 0; i < 30; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      size: 8 + Math.random() * 20,
+      speed: 0.5 + Math.random() * 1.5,
+      drift: (Math.random() - 0.5) * 1.2,
+      opacity: 0.4 + Math.random() * 0.5,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.05,
+      hue: Math.random() * 360,
+    });
+  }
+  
+  const animate = () => {
+    const elapsed = (performance.now() - startTime) / 1000;
+    if (elapsed >= duration) {
+      audioSource.stop();
+      recorder.stop();
+      return;
+    }
+    
+    const validImgs = imgs.filter(i => i);
+    if (validImgs.length > 0) {
+      const per = duration / validImgs.length;
+      const imgIdx = Math.min(Math.floor(elapsed / per), validImgs.length - 1);
+      const img = validImgs[imgIdx];
+      const cyclePos = (elapsed % 8) / 8;
+      const scale = 1.05 + Math.sin(cyclePos * Math.PI) * 0.08;
+      const tx = Math.sin(elapsed * 0.3) * 15;
+      const ty = Math.cos(elapsed * 0.25) * 10;
+      
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, W, H);
+      ctx.save();
+      ctx.translate(W/2 + tx, H/2 + ty);
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, -W/2, -H/2, W, H);
+      ctx.restore();
+    }
+    
+    drawHearts(ctx, W, H);
+    drawLyrics(ctx, W, H, elapsed, duration, lyricLines);
+    
+    ctx.font = `500 ${Math.round(W * 0.025)}px 'Cormorant Garamond', serif`;
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.shadowColor = 'rgba(0,0,0,0.5)';
+    ctx.shadowBlur = 4;
+    ctx.fillText('@mirco9015', W - 20, 20);
+    ctx.shadowBlur = 0;
+    
+    requestAnimationFrame(animate);
+  };
+  
+  animate();
+  await stopped;
+  
+  const blob = new Blob(chunks, { type: 'video/webm' });
+  videoBlobs[tr.id] = blob;
+  
+  const url = URL.createObjectURL(blob);
+  const player = document.getElementById(`vidPlayer_${tr.id}`);
+  player.src = url;
+  player.style.display = 'block';
+  document.getElementById(`vidDl_${tr.id}`).style.display = 'flex';
+}
+
+function drawHearts(ctx, W, H) {
+  for (const p of particles) {
+    p.y -= p.speed;
+    p.x += p.drift + Math.sin(p.y * 0.01) * 0.5;
+    p.rotation += p.rotSpeed;
+    if (p.y < -50) { p.y = H + 50; p.x = Math.random() * W; }
+    if (p.x < -50) p.x = W + 50;
+    if (p.x > W + 50) p.x = -50;
+    
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation);
+    ctx.globalAlpha = p.opacity;
+    ctx.fillStyle = `hsl(${330 + Math.sin(p.hue) * 20}, 90%, 70%)`;
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = '#ff4d8d';
+    const s = p.size / 30;
+    ctx.beginPath();
+    ctx.moveTo(0, 5*s);
+    ctx.bezierCurveTo(0, 0, -12*s, -8*s, -12*s, -18*s);
+    ctx.bezierCurveTo(-12*s, -25*s, -6*s, -28*s, 0, -22*s);
+    ctx.bezierCurveTo(6*s, -28*s, 12*s, -25*s, 12*s, -18*s);
+    ctx.bezierCurveTo(12*s, -8*s, 0, 0, 0, 5*s);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+function drawLyrics(ctx, W, H, elapsed, duration, lines) {
+  if (lines.length === 0) return;
+  const idx = Math.min(Math.floor((elapsed / duration) * lines.length), lines.length - 1);
+  const text = lines[idx];
+  if (!text) return;
+  
+  const lineProgress = ((elapsed * lines.length / duration) % 1);
+  const fade = Math.min(lineProgress * 4, 1) * Math.min((1 - lineProgress) * 4, 1) * 0.95 + 0.05;
+  
+  const fontSize = Math.round(W * 0.06);
+  const lineHeight = Math.round(fontSize * 1.4);
+  ctx.font = `700 ${fontSize}px "Noto Sans JP", "Shippori Mincho B1", sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  const wrapped = wrapTextForCanvas(ctx, text, W * 0.85);
+  const centerY = H * 0.78;
+  
+  ctx.globalAlpha = fade * 0.7;
+  const grad = ctx.createLinearGradient(0, H * 0.55, 0, H);
+  grad.addColorStop(0, 'rgba(0,0,0,0)');
+  grad.addColorStop(1, 'rgba(0,0,0,0.85)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, H * 0.55, W, H * 0.45);
+  
+  ctx.globalAlpha = fade;
+  wrapped.forEach((line, i) => {
+    const y = centerY - (wrapped.length - 1) * lineHeight / 2 + i * lineHeight;
+    ctx.shadowColor = 'rgba(212, 175, 55, 0.85)';
+    ctx.shadowBlur = 16;
+    ctx.fillStyle = 'white';
+    ctx.fillText(line, W / 2, y);
+  });
+  ctx.shadowBlur = 0;
+  ctx.globalAlpha = 1;
+}
+
+function wrapTextForCanvas(ctx, text, maxWidth) {
+  const lines = [];
+  let line = '';
+  for (const ch of text) {
+    if (ch === '\n') { lines.push(line); line = ''; continue; }
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+async function downloadVid(id) {
+  const blob = videoBlobs[id];
+  if (!blob) return;
+  const filename = `mirco_video_${Date.now()}.webm`;
+  const file = new File([blob], filename, { type: 'video/webm' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], title: filename }); return; } catch(e){}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ================ EXPORT ================
+
+function exportData() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    handle: '@mirco9015',
+    tracks: state.tracks,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `mirco_backup_${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ================ STATE ================
+
+function escapeHTML(s) { return String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function saveState() {
+  try {
+    const stripped = {
+      tracks: state.tracks,
+      expandedId: state.expandedId,
+      recentBatchIds: state.recentBatchIds,
+    };
+    localStorage.setItem('mirco_v6', JSON.stringify(stripped));
+  } catch(e){}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('mirco_v6');
+    if (saved) {
+      const s = JSON.parse(saved);
+      state.tracks = s.tracks || [];
+      state.expandedId = s.expandedId || null;
+      state.recentBatchIds = s.recentBatchIds || [];
+    }
+  } catch(e){}
+}
+
+function resetAll() {
+  if (!confirm('Reset all data?')) return;
+  localStorage.removeItem('mirco_v6');
+  location.reload();
+}
+
+init();
+</script>
+
+</body>
+</html>
